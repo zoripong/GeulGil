@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">글길 - 역발상 국어사전</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>
