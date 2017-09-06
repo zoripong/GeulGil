@@ -1,122 +1,96 @@
 package com.five.high.emirim.geulgil.Activity;
 
-import android.graphics.drawable.Drawable;
+
+import android.app.Service;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.five.high.emirim.geulgil.Adapter.CheckBoxManager;
-import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
-import com.five.high.emirim.geulgil.Control.ControlData;
-import com.five.high.emirim.geulgil.M;
+import com.five.high.emirim.geulgil.Adapter.SearchBarManager;
+import com.five.high.emirim.geulgil.Adapter.SoftKeyboard;
 import com.five.high.emirim.geulgil.R;
 
-import java.util.HashSet;
+public class MainActivity extends AppCompatActivity{
+    private final String SEARCHING_WORD_KEY = "searchingWord";
+    private final String SEARCHING_WORD_TYPE = "wordtype";
 
+    SearchBarManager manager;
+    ImageView mIgLogo;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    //검색 키워드 관련 변수 (Using API)
-    ImageView mIvSearch;
-    ImageView mIvSimilarOrMean;
-    ImageView mIvFiltering;
-    EditText mEtSearchBox;
+    InputMethodManager im;
+    SoftKeyboard softKeyboard;
 
-    Drawable mDaSimilar;
-    Drawable mDaMean;
-
-    // 리사이클러뷰 세팅해주는 class
-    RecyclerSetter recyclerSetter;
-    RecyclerView recyclerView;
-
-    HashSet<String> hashSet;
-    ControlData controlData;
-
-    CheckBoxManager mCheckBoxManager;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //MyApplication3 start..
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); //툴바 start
-        setSupportActionBar(toolbar);
+        manager = new SearchBarManager(MainActivity.this, this);
+        mIgLogo = (ImageView)findViewById(R.id.iv_logo);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState(); //툴바 end
-        //end..
+        manager.findViewId();
 
-        M.sSorM = true; // 초기값 true(Similar)
-        findViewId(); //findViewById 함수 집합
-        mCheckBoxManager.setCheckBox();
+        getWindow().setBackgroundDrawableResource(R.drawable.backgroundimg);
 
-        mIvSearch.setOnClickListener(this);
-        mIvSimilarOrMean.setOnClickListener(this);
+        im = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(manager.getmSearchBar().getWindowToken(),0);
 
-        hashSet = new HashSet<String>();
+        softKeyboard = new SoftKeyboard(manager.getmRootLayout(), im);
+        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged(){
 
-        // 즐찾단어 임의로 넣어줌
-        hashSet.add("나"); hashSet.add("자신감"); //arrayList.add("별장");
-        recyclerSetter.setRecyclerCardView(recyclerView, this, hashSet);
+            @Override
+            public void onSoftKeyboardHide() {
+                new Handler(Looper.getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {//키보드 내려왔을때
+                        manager.showSelectedView();
+                        mIgLogo.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
 
-    }
+            @Override
+            public void onSoftKeyboardShow() {
+                new Handler(Looper.getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {//키보드 올라왔을 때
+                        manager.showSelectedView();
+                        mIgLogo.setVisibility(View.INVISIBLE);
+                    }
 
-    private void findViewId(){
-        mIvSearch = (ImageView)findViewById(R.id.iv_searchBtn);
-        mIvSimilarOrMean = (ImageView)findViewById(R.id.iv_similarOrMean);
-        mEtSearchBox = (EditText)findViewById(R.id.et_searchBox);
-        mDaSimilar = getResources().getDrawable(R.drawable.similar);
-        mDaMean = getResources().getDrawable(R.drawable.meaning);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerSetter = new RecyclerSetter(this);
-        controlData = new ControlData(this);
-        mCheckBoxManager = new CheckBoxManager();
-    }
-    @Override
-    public void onBackPressed() { //툴바  start (뒤로 가는 버튼)
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }//툴바 end
+                });
+            }
+        });
 
-    @Override
-    public void onClick(View v) {
-//        ControlData controlData = new ControlData(v.getContext());
-        switch (v.getId()){
-            case R.id.iv_similarOrMean:
-                M.sSorM = !M.sSorM; // True -> False False -> Mean
-                if(M.sSorM == true)
-                    mIvSimilarOrMean.setImageDrawable(mDaSimilar);
-                else
-                    mIvSimilarOrMean.setImageDrawable(mDaMean);
-                break;
-            case R.id.iv_searchBtn:
-                Toast.makeText(this, "검색 버튼", Toast.LENGTH_SHORT).show();
-                String searching = mEtSearchBox.getText().toString();
-                if(controlData.getWordItem(searching) == null)
-                    Toast.makeText(this, "단어 검색에 문제가 생겼습니다.", Toast.LENGTH_SHORT).show();
-                else
-                    controlData.myIntent(this, SearchCardviewActivity.class, searching);
-                break;
-        }
-    }
-    public void onCheckboxClicked(View view){
-        mCheckBoxManager.onClickCheckBox(view);
+
+        manager.getmSearchButton().setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String word = manager.getmSearchBar().getText().toString();
+                if(!word.equals("")) {
+                    Intent intent = new Intent(MainActivity.this, SearchCardviewActivity.class);
+                    intent.putExtra(SEARCHING_WORD_KEY, word);
+                    intent.putExtra(SEARCHING_WORD_TYPE, manager.isMeanKeyword());
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(MainActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
     }
 
 }

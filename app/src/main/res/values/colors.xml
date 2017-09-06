@@ -3,4 +3,7 @@
     <color name="colorPrimary">#1583ff</color>
     <color name="colorPrimaryDark">#126dd4</color>
     <color name="colorAccent">#c83a3a</color>
+    <color name="searchButton">#d2d2d2</color>
+    <color name="searchText">#adadad</color>
+    <color name="search_history_line">#0076fa</color>
 </resources>

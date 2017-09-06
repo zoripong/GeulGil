@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Control.ControlData;
-import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
 public class ResultViewActivity extends AppCompatActivity {
@@ -68,7 +67,7 @@ public class ResultViewActivity extends AppCompatActivity {
                 }
 
             }
-            //Button button = (Button) findViewById(DYNAMIC_VIEW_ID + numButton);
+            //Button keyword_select_botton = (Button) findViewById(DYNAMIC_VIEW_ID + numButton);
             //(DYNAMIC_VIEW_ID + numButton).setOnClickListener( new View.OnClickListener()
         }
 
@@ -112,12 +111,14 @@ public class ResultViewActivity extends AppCompatActivity {
         }
 
         private void setView(){
+/*
             WordItem result = controlData.getWordItem(mSearchingWord);
             mTvWord.setText(result.getmWord());
             mTvCategory.setText(result.getmCategory());
             mTvMean.setText(result.getmMean());
             mSimilar = result.getmSimilarKeyword();
             MAX_DYNAMIC_VIEW=mSimilar.length;
+*/
         }
 
 }

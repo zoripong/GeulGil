@@ -6,6 +6,7 @@ package com.five.high.emirim.geulgil;
 
 public class M {
     public static boolean sSorM; // staticSimilarOrMean
+                                    // True = Mean  False = Similar
 
     public static final int SCHEMACOUNT = 4; // db 속성 개수 (id 제외)
 

@@ -1,125 +1,138 @@
 package com.five.high.emirim.geulgil.Activity;
 
+import android.app.Service;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
+import com.five.high.emirim.geulgil.Adapter.SearchBarManager;
+import com.five.high.emirim.geulgil.Adapter.SoftKeyboard;
 import com.five.high.emirim.geulgil.Control.ControlData;
-import com.five.high.emirim.geulgil.M;
+import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
-public class SearchCardviewActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchCardviewActivity extends AppCompatActivity {
     private final String SEARCHING_WORD_KEY = "searchingWord";
+    private final String SEARCHING_WORD_TYPE = "wordtype";
 
     RecyclerView recyclerView;
     RecyclerSetter recyclerSetter;
 
-    HashSet<String> mSearchingWordSet;
-    ControlData controlData;
+    ArrayList<String> mSearchingWordSet;
+    HashSet<WordItem> mResultWordSet;
+    ControlData control;
 
-    String mSearchingWord;
+    boolean isExist = false;
 
-    ImageView mIvSearch;
-    ImageView mIvSimilarOrMean;
-    EditText mEtSearchBox;
+    SearchBarManager manager;
+    InputMethodManager im;
+    SoftKeyboard softKeyboard;
 
-    Drawable mDaSimilar;
-    Drawable mDaMean;
-
-    boolean wordExist;
+    private boolean isClicked = false;
+    private boolean isMeanKeyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_cardview);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); //툴바 start
-        setSupportActionBar(toolbar);
+        manager = new SearchBarManager(SearchCardviewActivity.this, this);
+        manager.findViewId();
+        im = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(manager.getmSearchBar().getWindowToken(),0);
 
-        //DRAWER
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState(); //툴바 end
+        softKeyboard = new SoftKeyboard(manager.getmRootLayout(), im);
+        softKeyboard.setSoftKeyboardCallback(new SoftKeyboard.SoftKeyboardChanged(){
+
+            @Override
+            public void onSoftKeyboardHide() {
+                new Handler(Looper.getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {//키보드 내려왔을때
+                        manager.showSelectedView();
+                    }
+                });
+            }
+
+            @Override
+            public void onSoftKeyboardShow() {
+                new Handler(Looper.getMainLooper()).post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {//키보드 올라왔을 때
+                        manager.showSelectedView();
+                    }
+
+
+                });
+            }
+        });
+
+
+        manager.getmSearchButton().setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO
+                String word = manager.getmSearchBar().getText().toString();
+            }
+        });
+
+
+        // [ACTION BAR]
+        try {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.custom_bar);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.custom_bar);
         //
 
-        mIvSearch = (ImageView)findViewById(R.id.iv_searchBtn);
-        mIvSimilarOrMean = (ImageView)findViewById(R.id.iv_similarOrMean);
-        mEtSearchBox = (EditText)findViewById(R.id.et_searchBox);
-
-        mDaSimilar = getResources().getDrawable(R.drawable.similar);
-        mDaMean = getResources().getDrawable(R.drawable.meaning);
-
-        mIvSearch.setOnClickListener(this);
-        mIvSimilarOrMean.setOnClickListener(this);
-
+        //[Control of Data]
         Intent intent = getIntent();
-        mSearchingWord = intent.getExtras().getString(SEARCHING_WORD_KEY);
+        String word = intent.getExtras().getString(SEARCHING_WORD_KEY);
 
-        // 검색 중인 단어들의 집합
-        mSearchingWordSet = new HashSet<String>();   // 중복값 제외해줌 + 순서 X
-        mSearchingWordSet.add(mSearchingWord);
+        // Activity 변환 시 넘어오는 검색 단어는 1개 뿐
+        TextView searchingWord = (TextView)findViewById(R.id.searching_word_01);
+        searchingWord.setText(word);
 
-        controlData = new ControlData(this);
+        // 컨트롤로 서버에서 데이터 가져오고 WordItem HashSet에 추가 -> recyclerSetter.setRecyclerCardView
+        mSearchingWordSet = new ArrayList<String>();
+        mSearchingWordSet.add(word);
+
+        mResultWordSet = new HashSet<WordItem>();
+        control = new ControlData();
+
+        // 단어의 결과값을 Hash에 add를 요청
+        mResultWordSet = control.searchingWord(mResultWordSet, word);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerSetter = new RecyclerSetter(this);
 
-        wordExist = recyclerSetter.setRecyclerCardView(recyclerView, this, mSearchingWordSet);
+        isExist = recyclerSetter.setRecyclerCardView(recyclerView, this, mResultWordSet);
+        //
 
     }
 
+    //// TODO: 2017-09-05 결과내 재검색
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.iv_similarOrMean:
-                M.sSorM = !M.sSorM; // True -> False False -> Mean
-                if(M.sSorM == true)
-                    mIvSimilarOrMean.setImageDrawable(mDaSimilar);
-                else
-                    mIvSimilarOrMean.setImageDrawable(mDaMean);
-                break;
+    //TODO : 검색 단어 버튼 다이나믹 추가
 
-            case R.id.iv_searchBtn:
-                // TODO : 검색 엔진 다시 만들기
-                if(controlData.getWordItem(mSearchingWord) == null) {
-                    wordExist = false;
-                    Toast.makeText(v.getContext(), "단어 검색 중 문제가 발생했습니다.", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    mSearchingWordSet.add(mEtSearchBox.getText().toString());
-//                    addSimilarWord(mSearchingWord);
-                }
-                mEtSearchBox.setText("");
-                wordExist = recyclerSetter.setRecyclerCardView(recyclerView, this, mSearchingWordSet);
+    //TODO : 플로팅버튼
 
-                break;
-        }
-    }
-
-    // TODO : 대기
-    /*
-    // 유사어를 검색어에 추가시킴.. 어라,, 이거 안돼네,, ㅋ
-    private void addSimilarWord(String mSearchingWord) {
-        String result[] = controlData.parsingTheData(controlData.getData(mSearchingWord));
-        Log.e("NOEXIST", result[0]);
-        String similar[] = result[0].split(",");
-        for(int i = 0; i<similar.length; i++)
-            mSearchingWordSet.add(similar[i]);
-    }
-    */
 }

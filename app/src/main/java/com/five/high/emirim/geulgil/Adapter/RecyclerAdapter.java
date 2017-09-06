@@ -5,6 +5,7 @@ package com.five.high.emirim.geulgil.Adapter;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -75,7 +76,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             ControlData controlData = new ControlData(context);
             @Override
             public void onClick(View v) {
-                controlData.myIntent(v.getContext(), ResultViewActivity.class, item.getmWord());
+                Intent intent = new Intent(v.getContext(), ResultViewActivity.class);
+
+//                controlData.myIntent(v.getContext(), ResultViewActivity.class, item.getmWord());
+
             }
         });
     }
@@ -96,8 +100,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(itemView);
             mTvWord = (TextView) itemView.findViewById(R.id.tv_word);
             mTvMean = (TextView) itemView.findViewById(R.id.tv_mean);
-            mTvMeanKeyword = (TextView) itemView.findViewById(R.id.tv_meankeyword);
-            mTvSimilarKeyword = (TextView) itemView.findViewById(R.id.tv_similarkeyword);
+            mTvMeanKeyword = (TextView) itemView.findViewById(R.id.meankeyword01);
+            mTvSimilarKeyword = (TextView) itemView.findViewById(R.id.similarkeyword01);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
     }

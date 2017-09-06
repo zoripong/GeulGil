@@ -1,26 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/frame_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
-
-    <include
-        layout="@layout/app_bar_main"
+    >
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        <include
+            android:id="@+id/search_box"
+            layout="@layout/search_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="10dp"
+            android:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/blur"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#88000000"
+            android:visibility="invisible"
+            />
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:id="@+id/search_box_selected"
+            android:visibility="invisible"
+            layout="@layout/search_box_selected"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/searched_words"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="185dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+        <TextView
+            android:id="@+id/searching_word_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@layout/keyword_button_mean"
+            android:text="@string/app_name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_results"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        />
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="100dp"
+        android:visibility="visible">
 
-</android.support.v4.widget.DrawerLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/floatingActionButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:clickable="true"-->
+        <!--app:fabSize="normal"-->
+        <!--app:srcCompat="@drawable/home"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:layout_gravity="right|bottom"-->
+        <!--android:layout_margin="15dp"/>-->
+
+</FrameLayout>
