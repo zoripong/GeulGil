@@ -1,17 +1,23 @@
 package com.five.high.emirim.geulgil.Model;
 
+import java.util.Arrays;
+
 /**
  * Created by 유리 on 2017-06-16.
  */
 
 public class WordItem {
+    private int id;
     private String mWord;
     private String mMean;
     private String mPart;
-    private String mCategory;
     private String [] mMeanKeyword;
     private String [] mSimilarKeyword;
     private int recommend;
+
+    public int getId() {
+        return id;
+    }
 
     public String getmWord() {
         return mWord;
@@ -23,10 +29,6 @@ public class WordItem {
 
     public String getmPart() {
         return mPart;
-    }
-
-    public String getmCategory() {
-        return mCategory;
     }
 
     public String[] getmMeanKeyword() {
@@ -41,13 +43,26 @@ public class WordItem {
         return recommend;
     }
 
-    public WordItem(String mWord, String mMean, String mPart, String mCategory, String [] mMeanKeyword, String [] mSimilarKeyword, int recommend) {
+    public WordItem(int id, String mWord, String mMean, String mPart, String [] mMeanKeyword, String [] mSimilarKeyword, int recommend) {
+        this.id = id;
         this.mWord = mWord;
         this.mMean = mMean;
         this.mPart = mPart;
-        this.mCategory = mCategory;
         this.mMeanKeyword = mMeanKeyword;
         this.mSimilarKeyword = mSimilarKeyword;
         this.recommend = recommend;
+    }
+
+    @Override
+    public String toString() {
+        return "WordItem{" +
+                "id=" + id +
+                ", mWord='" + mWord + '\'' +
+                ", mMean='" + mMean + '\'' +
+                ", mPart='" + mPart + '\'' +
+                ", mMeanKeyword=" + Arrays.toString(mMeanKeyword) +
+                ", mSimilarKeyword=" + Arrays.toString(mSimilarKeyword) +
+                ", recommend=" + recommend +
+                '}';
     }
 }

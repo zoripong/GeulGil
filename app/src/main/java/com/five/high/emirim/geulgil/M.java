@@ -13,4 +13,6 @@ public class M {
     public static final boolean [] sCatCheck = new boolean[5];
     public static final boolean [] sPartCheck = new boolean[5];
 
+    public static boolean isNull = false;
+
 }

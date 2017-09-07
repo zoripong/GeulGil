@@ -5,6 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
+
+    <LinearLayout
+        android:id="@+id/searched_words"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="185dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="100dp"
+        android:visibility="visible">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/floatingActionButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:clickable="true"-->
+        <!--app:fabSize="normal"-->
+        <!--app:srcCompat="@drawable/home"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:layout_gravity="right|bottom"-->
+        <!--android:layout_margin="15dp"/>-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -38,54 +83,5 @@
             />
 
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/searched_words"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="185dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        >
-        <TextView
-            android:id="@+id/searching_word_01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@layout/keyword_button_mean"
-            android:text="@string/app_name"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/search_results"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="100dp"
-        android:visibility="visible">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/floatingActionButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:clickable="true"-->
-        <!--app:fabSize="normal"-->
-        <!--app:srcCompat="@drawable/home"-->
-        <!--android:backgroundTint="@color/colorPrimary"-->
-        <!--android:layout_gravity="right|bottom"-->
-        <!--android:layout_margin="15dp"/>-->
 
 </FrameLayout>
