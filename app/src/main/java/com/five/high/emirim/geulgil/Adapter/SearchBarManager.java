@@ -70,6 +70,9 @@ public class SearchBarManager {
         mSearchBar = (EditText)mSearchView.findViewById(R.id.et_searchBox);
         mBackButton = (ImageView)mSearchView.findViewById(R.id.iv_filterBtn);
         mSearchButton = (ImageView)mSearchView.findViewById(R.id.iv_searchBtn);
+        mSearchBar.setFocusable(false);
+        mSearchBar.setFocusableInTouchMode(false);
+        mSearchBar.setClickable(false);
         clickListener();
     }
 
@@ -79,6 +82,9 @@ public class SearchBarManager {
             public void onClick(View v) {
                 isMeanKeyword = true;
                 changeInnerView(false);
+                mSearchBar.setFocusable(true);
+                mSearchBar.setFocusableInTouchMode(true);
+
             }
         });
 
@@ -87,6 +93,8 @@ public class SearchBarManager {
             public void onClick(View v) {
                 isMeanKeyword = false;
                 changeInnerView(false);
+                mSearchBar.setFocusable(true);
+                mSearchBar.setFocusableInTouchMode(true);
             }
         });
 
@@ -96,6 +104,8 @@ public class SearchBarManager {
                 changeInnerView(true);
                 mMeanKeywordButton.setChecked(false);
                 mSimilarKeywordButton.setChecked(false);
+
+
             }
         });
 
@@ -146,11 +156,18 @@ public class SearchBarManager {
     private void changeInnerView(boolean isBackBtn) {
         if(isBackBtn){
             mSearchView.setVisibility(View.INVISIBLE);
+            mSearchBar.setFocusable(false);
+            mSearchBar.setFocusableInTouchMode(false);
+            mSearchBar.setClickable(false);
         }
         else{
             mSearchView.setVisibility(View.VISIBLE);
             mBackButton.setImageResource(R.drawable.back);
+            mSearchBar.setFocusable(true);
+            mSearchBar.setFocusableInTouchMode(true);
+            mSearchBar.setClickable(true);
             mSearchBar.requestFocus();
+
         }
     }
 

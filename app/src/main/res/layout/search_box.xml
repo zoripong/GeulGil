@@ -6,7 +6,9 @@
     android:id="@+id/search_box"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
+    android:elevation="3dp"
     >
+
     <EditText
         android:id="@+id/et_searchBox"
         android:layout_width="wrap_content"
@@ -14,9 +16,10 @@
         android:layout_weight="1"
         android:background="@drawable/left_button"
         android:hint="있잖아요..! 생각이 날까말까한 그 단어...!"
-        android:textSize="12dp"
         android:padding="10dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12dp"/>
+
     <ImageView
         android:id="@+id/iv_filterBtn"
         android:layout_width="40dp"

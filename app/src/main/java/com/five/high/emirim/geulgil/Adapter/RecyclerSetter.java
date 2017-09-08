@@ -18,6 +18,7 @@ import java.util.Iterator;
 
 public class RecyclerSetter {
     ArrayList<WordItem> items;
+    RecyclerAdapter adapter;
 //    WordItem[] item;
     String mWord[]; // 즐겨찾는 단어
     private final int STAR_SIZE = 3; // 즐찾 단어 개수
@@ -93,12 +94,15 @@ public class RecyclerSetter {
             items.add(iterator.next());
         }
 
-        recyclerView.setAdapter(new RecyclerAdapter(context, items, R.layout.content_main));
+        adapter = new RecyclerAdapter(context, items, R.layout.content_main);
+        recyclerView.setAdapter(adapter);
         return true;
 
     }
 
 
-
+    public RecyclerAdapter getAdapter() {
+        return adapter;
+    }
 }
 

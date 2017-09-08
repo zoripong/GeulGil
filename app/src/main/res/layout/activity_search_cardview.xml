@@ -6,21 +6,24 @@
     android:layout_height="match_parent"
     >
 
-
-    <LinearLayout
-        android:id="@+id/searched_words"
-        android:layout_width="match_parent"
+    <!--여기서부터 추가한거-->
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="185dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:orientation="horizontal"
-        android:visibility="visible"
         >
-
-    </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/searched_words"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        </LinearLayout>
+    </HorizontalScrollView>
+    <!--여기까지 추가한거-->
     <LinearLayout
         android:id="@+id/search_results"
         android:layout_width="match_parent"
@@ -41,15 +44,15 @@
     </LinearLayout>
 
     <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/floatingActionButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:clickable="true"-->
-        <!--app:fabSize="normal"-->
-        <!--app:srcCompat="@drawable/home"-->
-        <!--android:backgroundTint="@color/colorPrimary"-->
-        <!--android:layout_gravity="right|bottom"-->
-        <!--android:layout_margin="15dp"/>-->
+    <!--android:id="@+id/floatingActionButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:clickable="true"-->
+    <!--app:fabSize="normal"-->
+    <!--app:srcCompat="@drawable/home"-->
+    <!--android:backgroundTint="@color/colorPrimary"-->
+    <!--android:layout_gravity="right|bottom"-->
+    <!--android:layout_margin="15dp"/>-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

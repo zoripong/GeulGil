@@ -2,9 +2,11 @@ package com.five.high.emirim.geulgil.Activity;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Adapter.RecyclerAdapter;
 import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
 import com.five.high.emirim.geulgil.Adapter.SearchBarManager;
 import com.five.high.emirim.geulgil.Adapter.SoftKeyboard;
@@ -35,9 +38,11 @@ public class SearchCardviewActivity extends AppCompatActivity {
     int reqNum;
     TextView searchingWord;
     private LinearLayout searched_words;
+    private FloatingActionButton mFab;
 
     RecyclerView recyclerView;
     RecyclerSetter recyclerSetter;
+    RecyclerAdapter.ViewHolder holder;
 
     ArrayList<SearchingWord> mSearchingWordSet;
     HashSet<WordItem> mResultWordSet;
@@ -59,6 +64,21 @@ public class SearchCardviewActivity extends AppCompatActivity {
 
         manager = new SearchBarManager(SearchCardviewActivity.this, this);
         manager.findViewId();
+
+        mFab = (FloatingActionButton)findViewById(R.id.fabLayout).findViewById(R.id.fab);
+
+        mFab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO: 여부 파악
+//                Dialog dialog = new Dialog()
+                Intent intent = new Intent(SearchCardviewActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+            }
+        });
+
         im = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
         im.hideSoftInputFromWindow(manager.getmSearchBar().getWindowToken(),0);
 
@@ -73,6 +93,7 @@ public class SearchCardviewActivity extends AppCompatActivity {
                     public void run()
                     {//키보드 내려왔을때
                         manager.showSelectedView();
+                        getSupportActionBar().show();
                     }
                 });
             }
@@ -85,6 +106,7 @@ public class SearchCardviewActivity extends AppCompatActivity {
                     public void run()
                     {//키보드 올라왔을 때
                         manager.showSelectedView();
+                        getSupportActionBar().hide();
                     }
 
 
@@ -92,6 +114,7 @@ public class SearchCardviewActivity extends AppCompatActivity {
             }
         });
 
+        manager.getmSearchBar().setHint("지금 생각나는 그거.. 그거 있잖아요!");
 
         manager.getmSearchButton().setOnClickListener(new View.OnClickListener(){
             @Override
@@ -101,6 +124,8 @@ public class SearchCardviewActivity extends AppCompatActivity {
                 reLoading(new SearchingWord(manager.getmSearchBar().getText().toString(), manager.isMeanKeyword()));
 //                searchingWord
                 im.hideSoftInputFromWindow(manager.getmSearchBar().getWindowToken(),0);
+                manager.getmSearchBar().setText("");
+                manager.getmSearchBar().clearFocus();
             }
         });
 
@@ -138,8 +163,10 @@ public class SearchCardviewActivity extends AppCompatActivity {
 
         if(M.isNull == true){
             Intent backIntent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(backIntent);
             Toast.makeText(getApplicationContext(), "원하신 검색 결과가 없습니다! 검색어를 확인해주세요!", Toast.LENGTH_SHORT).show();
+            // TODO 전환시 애니메이션
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
@@ -147,6 +174,15 @@ public class SearchCardviewActivity extends AppCompatActivity {
 
         isExist = recyclerSetter.setRecyclerCardView(recyclerView, this, mResultWordSet);
         //
+
+
+        recyclerSetter.getAdapter().getmXButton().setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Alert", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -158,17 +194,28 @@ public class SearchCardviewActivity extends AppCompatActivity {
     }
 
 
+
     //TODO : 검색 단어 버튼 다이나믹 추가
     private void setSearchingWord(SearchingWord word){
         reqNum = mSearchingWordSet.size();
         searched_words = (LinearLayout) findViewById(R.id.searched_words);
-        searched_words.setOrientation(LinearLayout.VERTICAL);
 
         for(int i = reqNum-1; i < reqNum; i++) {
             searchingWord = new TextView(this);
             searchingWord.setText(word.getWord());
             //int resId = getResources().getIdentifier("btn_select_" + i, "id", getContext().getPackageName());
             searchingWord.setId(DYNAMIC_VIEW_ID + i);
+
+            ///여기서부터 텍스트뷰 커스텀
+            searchingWord.setBackgroundResource(R.drawable.keyword_button_mean);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(10,0,10,0);
+            searchingWord.setLayoutParams(params);
+            String strColor = "#FFFFFF";
+            searchingWord.setTextColor(Color.parseColor(strColor));
+            //여기까지 텍스트뷰 커스텀
+
             pushButton(searchingWord);
             searched_words.addView(searchingWord);
         }
@@ -183,7 +230,7 @@ public class SearchCardviewActivity extends AppCompatActivity {
         });
     }
 
-
     //TODO : 플로팅버튼
 
+    // 수정사항 -> 카드뷰 삭제버튼, 텍스트뷰 커스텀
 }

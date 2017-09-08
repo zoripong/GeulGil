@@ -11,19 +11,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Activity.ResultViewActivity;
-import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    private final String EXTRA_WORDITEM = "wordItem";
     Context context;
     List<WordItem> items;
     int item_layout;
+    ImageView mXButton;
 
     public RecyclerAdapter(Context context, List<WordItem> items, int item_layout) {
         this.context = context;
@@ -38,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         final WordItem item = items.get(position);
 
         holder.mTvWord.setText(item.getmWord());
@@ -47,41 +49,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         String [] similar = item.getmSimilarKeyword();
         String [] mean = item.getmMeanKeyword();
 
-        StringBuffer addSimilar = new StringBuffer("");
-        StringBuffer addMean = new StringBuffer("");
 
-        if(similar != null) {
-           for(int i = 0; i<similar.length; i++) {
-               if (similar[i].equals("null")) {
-                   similar[i] = null;
-                   break;
-               }
-               addSimilar.append(similar[i] + ", ");
-           }
-        }
-        holder.mTvSimilarKeyword.setText(addSimilar);
+        // TODO: 2017-09-07 DYNAMIC BUTTON
 
-        if(mean != null) {
-            for(int i = 0; i<mean.length; i++) {
-                if (mean[i].equals("null")) {
-                    mean[i] = null;
-                    break;
-                }
-                addMean.append(mean[i] + ", ");
-            }
-        }
-        holder.mTvMeanKeyword.setText(addMean);
+        holder.mTvSimilarKeyword.setText(similar[0]);
+
+        holder.mTvMeanKeyword.setText(mean[0]);
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
-            ControlData controlData = new ControlData(context);
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ResultViewActivity.class);
-
-//                controlData.myIntent(v.getContext(), ResultViewActivity.class, item.getmWord());
+            // TODO: 2017-09-07 : put Extra
+                v.getContext().startActivity(intent);
 
             }
         });
+
+//        holder.mXbutton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(v.getContext(), "삭제 버튼", Toast.LENGTH_SHORT).show();
+//                items.remove(position);
+//
+//
+//            }
+//        });
     }
 
     @Override
@@ -95,6 +88,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         TextView mTvMean;
         TextView mTvSimilarKeyword;
         TextView mTvMeanKeyword;
+        ImageView mXbutton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -103,6 +97,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             mTvMeanKeyword = (TextView) itemView.findViewById(R.id.meankeyword01);
             mTvSimilarKeyword = (TextView) itemView.findViewById(R.id.similarkeyword01);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
+            mXbutton = (ImageView) itemView.findViewById(R.id.x_button);
         }
+    }
+
+    public ImageView getmXButton() {
+        return mXButton;
     }
 }
