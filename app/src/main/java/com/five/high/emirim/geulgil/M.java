@@ -5,10 +5,19 @@ package com.five.high.emirim.geulgil;
  */
 
 public class M {
-    public static boolean sSorM; // staticSimilarOrMean
-                                    // True = Mean  False = Similar
+    private static int sWidth;
+    private static int sHeight;
 
-    public static final int SCHEMACOUNT = 4; // db 속성 개수 (id 제외)
+    public static void setSize(int width, int heigth){
+        sWidth = width;
+         sHeight = heigth;
+    }
+    public static int getWidth(){
+        return  sWidth;
+    }
+    public static int getHeight(){
+        return  sWidth;
+    }
 
     public static final boolean [] sCatCheck = new boolean[5];
     public static final boolean [] sPartCheck = new boolean[5];

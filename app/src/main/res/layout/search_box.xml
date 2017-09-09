@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:background="@drawable/left_button"
         android:hint="있잖아요..! 생각이 날까말까한 그 단어...!"
-        android:padding="10dp"
+        android:paddingLeft="18dp"
         android:singleLine="true"
         android:textSize="12dp"/>
 

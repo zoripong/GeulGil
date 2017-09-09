@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity{
                     intent.putExtra(SEARCHING_WORD_KEY, word);
                     intent.putExtra(SEARCHING_WORD_TYPE, manager.isMeanKeyword());
                     startActivity(intent);
+                    finish();
                 }else{
                     Toast.makeText(MainActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
                 }

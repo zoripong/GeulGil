@@ -8,6 +8,7 @@ public class SearchingWord {
     private String word;
     private boolean isMean;
 
+
     public SearchingWord(String word, boolean type) {
         this.word = word;
         this.isMean = type;

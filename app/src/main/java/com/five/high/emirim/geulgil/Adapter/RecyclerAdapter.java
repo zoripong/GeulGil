@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Activity.MainActivity;
 import com.five.high.emirim.geulgil.Activity.ResultViewActivity;
 import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
@@ -21,7 +23,7 @@ import com.five.high.emirim.geulgil.R;
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private final String EXTRA_WORDITEM = "wordItem";
+    private final String SELECT_WORD = "selectedWord";
     Context context;
     List<WordItem> items;
     int item_layout;
@@ -60,21 +62,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ResultViewActivity.class);
-            // TODO: 2017-09-07 : put Extra
+                intent.putExtra(SELECT_WORD, items.get(position));
                 v.getContext().startActivity(intent);
 
             }
         });
 
-//        holder.mXbutton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(v.getContext(), "삭제 버튼", Toast.LENGTH_SHORT).show();
-//                items.remove(position);
-//
-//
-//            }
-//        });
+        holder.mXbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                WordItem itemLabel = items.get(position);
+                items.remove(position);
+                if(items.size()==0){
+                    Intent intent = new Intent(v.getContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    v.getContext().startActivity(intent);
+                    Toast.makeText(context, "카드를 모두 삭제하셨습니다.", Toast.LENGTH_SHORT).show();
+                }
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,items.size());
+            }
+        });
     }
 
     @Override
@@ -101,7 +109,4 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    public ImageView getmXButton() {
-        return mXButton;
-    }
 }

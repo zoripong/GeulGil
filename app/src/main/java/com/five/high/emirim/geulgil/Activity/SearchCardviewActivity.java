@@ -1,22 +1,23 @@
 package com.five.high.emirim.geulgil.Activity;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.five.high.emirim.geulgil.Adapter.RecyclerAdapter;
+import com.five.high.emirim.geulgil.Adapter.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
 import com.five.high.emirim.geulgil.Adapter.SearchBarManager;
 import com.five.high.emirim.geulgil.Adapter.SoftKeyboard;
@@ -30,19 +31,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SearchCardviewActivity extends AppCompatActivity {
-    private final int DYNAMIC_VIEW_ID = 0x8000;
 
     private final String SEARCHING_WORD_KEY = "searchingWord";
     private final String SEARCHING_WORD_TYPE = "wordtype";
 
-    int reqNum;
-    TextView searchingWord;
-    private LinearLayout searched_words;
     private FloatingActionButton mFab;
 
     RecyclerView recyclerView;
     RecyclerSetter recyclerSetter;
-    RecyclerAdapter.ViewHolder holder;
 
     ArrayList<SearchingWord> mSearchingWordSet;
     HashSet<WordItem> mResultWordSet;
@@ -57,10 +53,25 @@ public class SearchCardviewActivity extends AppCompatActivity {
     private boolean isClicked = false;
     private boolean isMeanKeyword;
 
+
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
+    Context mContext;
+    LayoutInflater inflater;
+
+
+    DynamicButtonManager dynamicButtonManager;
+    LinearLayout mLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_cardview);
+
+        //TODO : 여부파악 (!)
+        mContext = getApplicationContext();
+        inflater = (LayoutInflater)mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+//        View layout = inflater.inflate(R.layout.)
 
         manager = new SearchBarManager(SearchCardviewActivity.this, this);
         manager.findViewId();
@@ -71,10 +82,11 @@ public class SearchCardviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: 여부 파악
-//                Dialog dialog = new Dialog()
+
                 Intent intent = new Intent(SearchCardviewActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
 
             }
         });
@@ -153,7 +165,10 @@ public class SearchCardviewActivity extends AppCompatActivity {
         mSearchingWordSet = new ArrayList<SearchingWord>();
         mSearchingWordSet.add(word);
 
-        setSearchingWord(word);
+        dynamicButtonManager = new DynamicButtonManager(mContext, manager.getmRootLayout());
+        mLocation = (LinearLayout)findViewById(R.id.searched_words);
+
+        dynamicButtonManager.setDynamicButton(word, mLocation, false);
 
         mResultWordSet = new HashSet<WordItem>();
         control = new ControlData();
@@ -173,62 +188,16 @@ public class SearchCardviewActivity extends AppCompatActivity {
         recyclerSetter = new RecyclerSetter(this);
 
         isExist = recyclerSetter.setRecyclerCardView(recyclerView, this, mResultWordSet);
-        //
-
-
-        recyclerSetter.getAdapter().getmXButton().setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Alert", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
     }
 
     private void reLoading(SearchingWord word) {
-        setSearchingWord(word);
+        dynamicButtonManager.setDynamicButton(word, mLocation, true);
         mSearchingWordSet.add(word);
         recyclerSetter.setRecyclerCardView(recyclerView, this, mResultWordSet);
 
     }
 
 
-
-    //TODO : 검색 단어 버튼 다이나믹 추가
-    private void setSearchingWord(SearchingWord word){
-        reqNum = mSearchingWordSet.size();
-        searched_words = (LinearLayout) findViewById(R.id.searched_words);
-
-        for(int i = reqNum-1; i < reqNum; i++) {
-            searchingWord = new TextView(this);
-            searchingWord.setText(word.getWord());
-            //int resId = getResources().getIdentifier("btn_select_" + i, "id", getContext().getPackageName());
-            searchingWord.setId(DYNAMIC_VIEW_ID + i);
-
-            ///여기서부터 텍스트뷰 커스텀
-            searchingWord.setBackgroundResource(R.drawable.keyword_button_mean);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10,0,10,0);
-            searchingWord.setLayoutParams(params);
-            String strColor = "#FFFFFF";
-            searchingWord.setTextColor(Color.parseColor(strColor));
-            //여기까지 텍스트뷰 커스텀
-
-            pushButton(searchingWord);
-            searched_words.addView(searchingWord);
-        }
-    }
-
-    private void pushButton(final TextView searchingWord) {
-
-        searchingWord.setOnClickListener( new View.OnClickListener(){
-            public void onClick (View v){
-                Toast.makeText(SearchCardviewActivity.this, searchingWord.getText()+" "+searchingWord.getId(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     //TODO : 플로팅버튼
 

@@ -23,5 +23,9 @@
             android:layout_gravity="center"
             android:src="@drawable/intro_title" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/getSize"
+        android:layout_width="50dp"
+        android:layout_height="25dp"/>
 
 </RelativeLayout>

@@ -1,0 +1,112 @@
+package com.five.high.emirim.geulgil.Adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.five.high.emirim.geulgil.M;
+import com.five.high.emirim.geulgil.Model.SearchingWord;
+import com.five.high.emirim.geulgil.R;
+
+import java.util.ArrayList;
+
+/**
+ * Created by 유리 on 2017-09-08.
+ */
+
+public class DynamicButtonManager {
+    private int SEARCHING_WORD_ID = 0x8000;
+    Context mContext;
+    FrameLayout mRootLayout;
+
+    public DynamicButtonManager(Context context, FrameLayout root) {
+        mContext = context;
+        mRootLayout = root;
+    }
+
+    public void setDynamicButton(SearchingWord word, LinearLayout location, boolean clickable){
+        TextView searchingWord = new TextView(mContext);
+        searchingWord.setText(word.getWord());
+        searchingWord.setId(SEARCHING_WORD_ID++);
+
+        customizingBackground(searchingWord, word.isMean());
+
+        pushButton(searchingWord);
+
+        if(clickable){
+            final boolean[] isLongClicked = {false};
+            //롱클릭 리스너
+            searchingWord.setOnLongClickListener(new View.OnLongClickListener(){
+                @Override
+                public boolean onLongClick(View v) {
+                    isLongClicked[0] = true;
+                    Toast.makeText(mContext, "longClick", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+            searchingWord.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if(isLongClicked[0]){
+                        Toast.makeText(mContext, "remove", Toast.LENGTH_SHORT).show();
+                        isLongClicked[0] = false;
+                    }
+
+                }
+            });
+            mRootLayout.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    if (isLongClicked[0]){
+                        Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+        }
+        location.addView(searchingWord);
+
+    }
+
+    public void setDynamicButton(ArrayList<SearchingWord> words, LinearLayout location, boolean clickable){
+        for(int i = 0; i < words.size(); i++) {
+            setDynamicButton(words.get(i), location, clickable);
+        }
+    }
+
+    private void customizingBackground(TextView word, boolean isMean){
+        String strColor;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(10, 0, 10, 0);
+        word.setLayoutParams(params);
+        word.setWidth(M.getWidth());
+        word.setHeight(M.getHeight());
+        word.setGravity(Gravity.CENTER);
+        if(isMean) {
+            word.setBackgroundResource(R.drawable.keyword_button_mean);
+            strColor = "#FFFFFF";
+        }else{
+            word.setBackgroundResource(R.drawable.keyword_button_similar);
+            strColor = "#1583ff";
+        }
+        word.setTextColor(Color.parseColor(strColor));
+    }
+
+
+    public void pushButton(final TextView searchingWord) {
+        searchingWord.setOnClickListener( new View.OnClickListener(){
+            public void onClick (View v){
+                Toast.makeText(mContext, searchingWord.getText()+" "+searchingWord.getId()+" ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+}

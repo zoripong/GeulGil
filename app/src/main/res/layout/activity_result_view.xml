@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -126,6 +127,7 @@
             android:layout_marginRight="25dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_word"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="사랑"
@@ -133,13 +135,14 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"/>
             <TextView
+                android:id="@+id/tv_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="[명사]"
                 android:layout_marginBottom="15dp"/>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_mean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_1"
