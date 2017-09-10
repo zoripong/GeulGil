@@ -37,8 +37,8 @@
                     <TextView
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
                         android:background="@drawable/keyword_button_mean"
@@ -150,9 +150,5 @@
 
         </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
-    <include
-        android:id="@+id/fabLayout"
-        layout="@layout/floating_action_button" />
 </FrameLayout>

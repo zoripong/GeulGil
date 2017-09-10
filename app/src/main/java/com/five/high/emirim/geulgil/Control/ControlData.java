@@ -44,9 +44,12 @@ public class ControlData {
 
         HashSet<WordItem> newSet = new HashSet<WordItem>();
 
+        // 동일한 WordItem만 NewSet에 넣어줌
+        // 검색 결과가 없을 경우 처음 받은 hashSet을 넘김
         // Set 특성상 동일한 데이터가 존재하지 않음
         while (getIterator.hasNext()) {
             WordItem now = getIterator.next();
+            // 동일한 WordItem이 있거나, 첫 검색이거나
             if (hashSet.contains(now) || count == 0) {
                 Log.e("같니?", now.toString());
                 newSet.add(now);

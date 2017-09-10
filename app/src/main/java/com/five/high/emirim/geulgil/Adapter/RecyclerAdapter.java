@@ -15,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Activity.DetailViewActivity;
 import com.five.high.emirim.geulgil.Activity.MainActivity;
-import com.five.high.emirim.geulgil.Activity.ResultViewActivity;
 import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
@@ -27,7 +27,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     Context context;
     List<WordItem> items;
     int item_layout;
-    ImageView mXButton;
 
     public RecyclerAdapter(Context context, List<WordItem> items, int item_layout) {
         this.context = context;
@@ -54,14 +53,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         // TODO: 2017-09-07 DYNAMIC BUTTON
 
-        holder.mTvSimilarKeyword.setText(similar[0]);
-
-        holder.mTvMeanKeyword.setText(mean[0]);
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ResultViewActivity.class);
+                Intent intent = new Intent(v.getContext(), DetailViewActivity.class);
                 intent.putExtra(SELECT_WORD, items.get(position));
                 v.getContext().startActivity(intent);
 
@@ -102,8 +98,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(itemView);
             mTvWord = (TextView) itemView.findViewById(R.id.tv_word);
             mTvMean = (TextView) itemView.findViewById(R.id.tv_mean);
-            mTvMeanKeyword = (TextView) itemView.findViewById(R.id.meankeyword01);
-            mTvSimilarKeyword = (TextView) itemView.findViewById(R.id.similarkeyword01);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
             mXbutton = (ImageView) itemView.findViewById(R.id.x_button);
         }

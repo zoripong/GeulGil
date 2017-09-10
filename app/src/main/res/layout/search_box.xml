@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/search_box"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
     android:elevation="3dp"
     >
 
@@ -15,19 +15,19 @@
         android:layout_height="40dp"
         android:layout_weight="1"
         android:background="@drawable/left_button"
-        android:hint="있잖아요..! 생각이 날까말까한 그 단어...!"
+        android:hint="@string/edit_text"
         android:paddingLeft="18dp"
         android:singleLine="true"
         android:textSize="12dp"/>
 
-    <ImageView
-        android:id="@+id/iv_filterBtn"
-        android:layout_width="40dp"
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="90dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="-1dp"
         android:background="@drawable/straightroundborder"
-        android:padding="10dp"/>
+        android:entries="@array/searchType">
 
+    </Spinner>
     <ImageView
         android:id="@+id/iv_searchBtn"
         android:layout_width="40dp"

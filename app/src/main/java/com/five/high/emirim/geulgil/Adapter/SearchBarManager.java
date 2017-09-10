@@ -60,7 +60,6 @@ public class SearchBarManager {
         mSearchBoxSelected = activity.findViewById(R.id.search_box_selected);
         mBlur = (TextView)activity.findViewById(R.id.blur);
 
-        mFilterButton = (ImageView)mSearchBox.findViewById(R.id.iv_filterBtn);
 
         mSelectKeyword = mSearchBoxSelected.findViewById(R.id.select_keyword);
         mMeanKeywordButton = (RadioButton)mSelectKeyword.findViewById(R.id.radioMean);
@@ -68,7 +67,6 @@ public class SearchBarManager {
 
         mSearchView = mSearchBoxSelected.findViewById(R.id.search_keyword);
         mSearchBar = (EditText)mSearchView.findViewById(R.id.et_searchBox);
-        mBackButton = (ImageView)mSearchView.findViewById(R.id.iv_filterBtn);
         mSearchButton = (ImageView)mSearchView.findViewById(R.id.iv_searchBtn);
         mSearchBar.setFocusable(false);
         mSearchBar.setFocusableInTouchMode(false);

@@ -1,15 +1,17 @@
 package com.five.high.emirim.geulgil.Adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.SearchingWord;
 import com.five.high.emirim.geulgil.R;
 
@@ -22,21 +24,22 @@ import java.util.ArrayList;
 public class DynamicButtonManager {
     private int SEARCHING_WORD_ID = 0x8000;
     Context mContext;
-    FrameLayout mRootLayout;
+    LinearLayout mRootLayout;
 
-    public DynamicButtonManager(Context context, FrameLayout root) {
+    public DynamicButtonManager(Context context, LinearLayout root) {
         mContext = context;
         mRootLayout = root;
     }
 
-    public void setDynamicButton(SearchingWord word, LinearLayout location, boolean clickable){
+    private void setDynamicButton(SearchingWord word, LinearLayout location, boolean clickable){
+        Log.e("DYNAMIC BUTTON", "SET OK");
+
         TextView searchingWord = new TextView(mContext);
         searchingWord.setText(word.getWord());
+
         searchingWord.setId(SEARCHING_WORD_ID++);
 
         customizingBackground(searchingWord, word.isMean());
-
-        pushButton(searchingWord);
 
         if(clickable){
             final boolean[] isLongClicked = {false};
@@ -46,7 +49,7 @@ public class DynamicButtonManager {
                 public boolean onLongClick(View v) {
                     isLongClicked[0] = true;
                     Toast.makeText(mContext, "longClick", Toast.LENGTH_SHORT).show();
-                    return false;
+                    return true;
                 }
             });
             searchingWord.setOnClickListener(new View.OnClickListener(){
@@ -56,7 +59,6 @@ public class DynamicButtonManager {
                         Toast.makeText(mContext, "remove", Toast.LENGTH_SHORT).show();
                         isLongClicked[0] = false;
                     }
-
                 }
             });
             mRootLayout.setOnClickListener(new View.OnClickListener(){
@@ -68,9 +70,8 @@ public class DynamicButtonManager {
                     }
                 }
             });
-
-
         }
+
         location.addView(searchingWord);
 
     }
@@ -83,12 +84,9 @@ public class DynamicButtonManager {
 
     private void customizingBackground(TextView word, boolean isMean){
         String strColor;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10, 0, 10, 0);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT    , convertDpToPixel(25));
+        params.setMargins(convertDpToPixel(5), 0, convertDpToPixel(5), 0); // left top right bottom
         word.setLayoutParams(params);
-        word.setWidth(M.getWidth());
-        word.setHeight(M.getHeight());
         word.setGravity(Gravity.CENTER);
         if(isMean) {
             word.setBackgroundResource(R.drawable.keyword_button_mean);
@@ -100,13 +98,12 @@ public class DynamicButtonManager {
         word.setTextColor(Color.parseColor(strColor));
     }
 
-
-    public void pushButton(final TextView searchingWord) {
-        searchingWord.setOnClickListener( new View.OnClickListener(){
-            public void onClick (View v){
-                Toast.makeText(mContext, searchingWord.getText()+" "+searchingWord.getId()+" ", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private int convertDpToPixel(float dp){
+        Resources resources = mContext.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return (int)px;
     }
+
 
 }

@@ -1,10 +1,12 @@
 package com.five.high.emirim.geulgil.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by 유리 on 2017-09-07.
  */
 
-public class SearchingWord {
+public class SearchingWord implements Serializable {
     private String word;
     private boolean isMean;
 

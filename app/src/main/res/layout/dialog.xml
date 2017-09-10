@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:padding="35dip"
+            android:padding="35dp"
             android:text="검색 결과가 도움이 되셨습니까?"
             android:textColor="#7c7c7c"
              />
@@ -21,44 +21,43 @@
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="1dp"
         android:background="@drawable/popup_line"
-        android:layout_marginTop="5dip"/>
+        />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip"
+        android:paddingTop="7dp"
         android:gravity="center_horizontal"
         >
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1">
         <Button
             android:id="@+id/dialog_button_yes"
             android:layout_alignParentLeft="true"
             android:layout_width="match_parent"
-            android:layout_height="30dip"
+            android:layout_height="30dp"
             android:background="#ffffff"
             android:textColor="#7c7c7c"
             android:text="네"/>
         </LinearLayout>
         <TextView
-            android:layout_width="2dp"
+            android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:background="@drawable/btn_line"
             />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dip"
+            android:layout_marginRight="20dp"
             android:layout_weight="1">
         <Button
             android:id="@+id/dialog_button_no"
             android:layout_width="match_parent"
-            android:layout_height="30dip"
+            android:layout_height="30dp"
             android:layout_toRightOf="@id/dialog_button_yes"
             android:background="#ffffff"
             android:textColor="#7c7c7c"
