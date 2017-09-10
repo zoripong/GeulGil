@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().setBackgroundDrawableResource(R.drawable.backgroundimg);
+        getWindow().setBackgroundDrawableResource(R.drawable.background);
 
         View searchBar = findViewById(R.id.search_box);
         ImageView searchButton = (ImageView)searchBar.findViewById(R.id.iv_searchBtn);

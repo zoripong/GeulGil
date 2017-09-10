@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.Model.WordItem;
-import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -94,7 +93,7 @@ public class RecyclerSetter {
             items.add(iterator.next());
         }
 
-        adapter = new RecyclerAdapter(context, items, R.layout.content_main);
+        adapter = new RecyclerAdapter(context, items);
         recyclerView.setAdapter(adapter);
         return true;
 

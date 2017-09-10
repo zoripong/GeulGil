@@ -9,36 +9,25 @@ import java.util.HashSet;
 // mTitle과 관련된 모든 단어 정보를 가지고 있는 클래스
 
 public class ApiItem {
-    private String mTitle;
-    private HashSet<WordItem> mWordItems;
-    private HashSet<SameSounds> mSameSoundses;
+    private String title;
+    private HashSet<WordItem> relatives;
+    private HashSet<SameSounds> sameSoundses;
 
-    public ApiItem(){
-        this.mTitle = null;
-        mWordItems = new HashSet<WordItem>();
-        mSameSoundses = new HashSet<SameSounds>();
+    public ApiItem(String title, HashSet<WordItem> relatives, HashSet<SameSounds> sameSoundses) {
+        this.title = title;
+        this.relatives = relatives;
+        this.sameSoundses = sameSoundses;
     }
 
-
-    public ApiItem(String mTitle, HashSet<WordItem> mWordItems, HashSet<SameSounds> mSameSoundses) {
-        this.mTitle = mTitle;
-        this.mWordItems = mWordItems;
-        this.mSameSoundses = mSameSoundses;
+    public String getTitle() {
+        return title;
     }
 
-    public String getmTitle() {
-        return mTitle;
+    public HashSet<WordItem> getRelatives() {
+        return relatives;
     }
 
-    public void setmTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
-    public HashSet<WordItem> getmWordItems() {
-        return mWordItems;
-    }
-
-    public void setmWordItems(HashSet<WordItem> mWordItems) {
-        this.mWordItems = mWordItems;
+    public HashSet<SameSounds> getSameSoundses() {
+        return sameSoundses;
     }
 }

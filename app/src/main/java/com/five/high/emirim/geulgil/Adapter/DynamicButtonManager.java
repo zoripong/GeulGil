@@ -25,16 +25,17 @@ public class DynamicButtonManager {
     private int SEARCHING_WORD_ID = 0x8000;
     Context mContext;
     LinearLayout mRootLayout;
+    String strColor = null;
 
     public DynamicButtonManager(Context context, LinearLayout root) {
         mContext = context;
         mRootLayout = root;
     }
 
-    private void setDynamicButton(SearchingWord word, LinearLayout location, boolean clickable){
+    private void setDynamicButton(final SearchingWord word, final LinearLayout location, boolean clickable){
         Log.e("DYNAMIC BUTTON", "SET OK");
 
-        TextView searchingWord = new TextView(mContext);
+        final TextView searchingWord = new TextView(mContext);
         searchingWord.setText(word.getWord());
 
         searchingWord.setId(SEARCHING_WORD_ID++);
@@ -49,6 +50,9 @@ public class DynamicButtonManager {
                 public boolean onLongClick(View v) {
                     isLongClicked[0] = true;
                     Toast.makeText(mContext, "longClick", Toast.LENGTH_SHORT).show();
+                    searchingWord.setBackgroundResource(R.drawable.black_bt);
+                    //  searchingWord.setText("");
+                    searchingWord.setTextColor(Color.parseColor("#24FFFFFF"));
                     return true;
                 }
             });
@@ -58,6 +62,7 @@ public class DynamicButtonManager {
                     if(isLongClicked[0]){
                         Toast.makeText(mContext, "remove", Toast.LENGTH_SHORT).show();
                         isLongClicked[0] = false;
+                        location.removeView(searchingWord);
                     }
                 }
             });
@@ -66,7 +71,20 @@ public class DynamicButtonManager {
                 @Override
                 public void onClick(View v) {
                     if (isLongClicked[0]){
+                        isLongClicked[0] = false;
                         Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show();
+
+                        searchingWord.setText(word.getWord());
+                        if(word.isMean()){
+                            searchingWord.setBackgroundResource(R.drawable.keyword_button_mean);
+                            strColor = "#FFFFFF";
+                        }
+                        else {
+                            searchingWord.setBackgroundResource(R.drawable.keyword_button_similar);
+                            strColor = "#1583ff";
+                        }
+                        searchingWord.setTextColor(Color.parseColor(strColor));
+
                     }
                 }
             });

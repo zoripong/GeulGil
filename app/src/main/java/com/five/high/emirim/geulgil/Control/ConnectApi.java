@@ -1,7 +1,6 @@
 package com.five.high.emirim.geulgil.Control;
 
 import com.five.high.emirim.geulgil.Model.ApiItem;
-import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
 import java.util.HashSet;
@@ -28,10 +27,8 @@ public class ConnectApi {
         set.add(new WordItem(6, "강아지", "멍멍하는 잡식동물", "명사", keywords, keywords, 0));
 
         int ids[]= {1, 2, 3, 4, 5, 6};
-        HashSet<SameSounds> sameSoundsesSet = new HashSet<SameSounds>();
-        sameSoundsesSet.add(new SameSounds("몰랑이", ids));
 
-        ApiItem result = new ApiItem("기린", set, sameSoundsesSet);
+        ApiItem result = new ApiItem("기린", set);
 
         return result;
     }

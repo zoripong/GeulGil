@@ -26,12 +26,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private final String SELECT_WORD = "selectedWord";
     Context context;
     List<WordItem> items;
-    int item_layout;
 
-    public RecyclerAdapter(Context context, List<WordItem> items, int item_layout) {
+    public RecyclerAdapter(Context context, List<WordItem> items) {
         this.context = context;
         this.items = items;
-        this.item_layout = item_layout;
     }
 
     @Override

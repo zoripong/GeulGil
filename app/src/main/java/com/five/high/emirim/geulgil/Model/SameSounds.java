@@ -1,23 +1,25 @@
 package com.five.high.emirim.geulgil.Model;
 
+import java.util.ArrayList;
+
 /**
- * Created by 유리 on 2017-09-06.
+ * Created by 유리 on 2017-09-10.
  */
 
 public class SameSounds {
-    private String word;
-    private int ids[];
+    String id;
+    ArrayList<WordItem> words;
 
-    public String getWord() {
-        return word;
+    public SameSounds(String id, ArrayList<WordItem> words) {
+        this.id = id;
+        this.words = words;
     }
 
-    public int[] getIds() {
-        return ids;
+    public String getId() {
+        return id;
     }
 
-    public SameSounds(String word, int[] ids) {
-        this.word = word;
-        this.ids = ids;
+    public ArrayList<WordItem> getWords() {
+        return words;
     }
 }

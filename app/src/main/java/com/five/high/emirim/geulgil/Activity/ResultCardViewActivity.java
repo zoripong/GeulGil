@@ -55,7 +55,6 @@ public class ResultCardViewActivity extends AppCompatActivity {
                 intent.putExtra(SEARCHING_WORDS, mSearchingWordSet);
                 intent.putExtra(RESULT_WORDS, mResultWordSet);
                 startActivity(intent);
-                finish();
             }
         });
     }

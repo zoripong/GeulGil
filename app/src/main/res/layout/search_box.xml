@@ -25,6 +25,7 @@
         android:layout_width="90dp"
         android:layout_height="40dp"
         android:background="@drawable/straightroundborder"
+        android:layout_marginTop="1.2dp"
         android:entries="@array/searchType">
 
     </Spinner>
@@ -33,6 +34,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="-1dp"
+        android:layout_marginTop="1.2dp"
         android:background="@drawable/rightroundborder"
         android:padding="10dp"
         android:src="@drawable/search"/>
