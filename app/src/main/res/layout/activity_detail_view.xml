@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frame_root"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -23,39 +23,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <LinearLayout
+                    android:id="@+id/keywords_location_mean"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_mean"
-                        android:text="마음"
-                        android:textColor="#ffffff"
-                        android:gravity="center" />
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_mean"
-                        android:text="존재"
-                        android:textColor="#ffffff"
-                        android:gravity="center" />
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_mean"
-                        android:text="소중"
-                        android:textColor="#ffffff"
-                        android:gravity="center" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
                 </LinearLayout>
             </HorizontalScrollView>
             <HorizontalScrollView
@@ -64,56 +35,10 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp">
                 <LinearLayout
+                    android:id="@+id/keywords_location_similar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_similar"
-                        android:text="사모"
-                        android:gravity="center" />
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_similar"
-                        android:text="친애"
-                        android:gravity="center" />
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_similar"
-                        android:text="연애"
-                        android:gravity="center" />
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_similar"
-                        android:text="아가페"
-                        android:gravity="center" />
-                    <TextView
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/keyword_button_similar"
-                        android:text="연정"
-                        android:gravity="center" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
                 </LinearLayout>
             </HorizontalScrollView>
         </LinearLayout>
@@ -151,4 +76,4 @@
         </LinearLayout>
         </ScrollView>
     </LinearLayout>
-</FrameLayout>
+</LinearLayout>

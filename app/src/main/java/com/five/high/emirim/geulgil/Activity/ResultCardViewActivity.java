@@ -8,14 +8,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.five.high.emirim.geulgil.Adapter.DynamicButtonManager;
+import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
-import com.five.high.emirim.geulgil.Model.SearchingWord;
+import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+
+// TODO: 2017-09-10 : 키워드 단어 결과 연결,,!
 
 public class ResultCardViewActivity extends AppCompatActivity {
     private final String SEARCHING_WORDS = "searching word";
@@ -24,7 +27,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerSetter recyclerSetter;
 
-    ArrayList<SearchingWord> mSearchingWordSet;
+    ArrayList<KeywordItem> mKeywordItemSet;
     HashSet<WordItem> mResultWordSet;
 
     DynamicButtonManager dynamicButtonManager;
@@ -35,13 +38,13 @@ public class ResultCardViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result_cardview);
 
         Intent intent = getIntent();
-        mSearchingWordSet = (ArrayList<SearchingWord>) intent.getSerializableExtra(SEARCHING_WORDS);
+        mKeywordItemSet = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
         mResultWordSet = (HashSet<WordItem>) intent.getSerializableExtra(RESULT_WORDS);
 
         ImageView searchButton = (ImageView) findViewById(R.id.iv_searchBtn);
 
         dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), (LinearLayout) findViewById(R.id.root));
-        dynamicButtonManager.setDynamicButton(mSearchingWordSet, (LinearLayout) findViewById(R.id.searched_words), false);
+        dynamicButtonManager.setDynamicButton(mKeywordItemSet, (LinearLayout) findViewById(R.id.searched_words), false);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
@@ -52,9 +55,10 @@ public class ResultCardViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ResultCardViewActivity.this, SearchActivity.class);
-                intent.putExtra(SEARCHING_WORDS, mSearchingWordSet);
+                intent.putExtra(SEARCHING_WORDS, mKeywordItemSet);
                 intent.putExtra(RESULT_WORDS, mResultWordSet);
                 startActivity(intent);
+                finish();
             }
         });
     }

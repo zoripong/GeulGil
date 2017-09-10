@@ -1,8 +1,10 @@
 package com.five.high.emirim.geulgil.Control;
 
 import com.five.high.emirim.geulgil.Model.ApiItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -18,17 +20,26 @@ public class ConnectApi {
          */
         HashSet<WordItem> set = new HashSet<WordItem>();
         String [] keywords = {"가", "나", "다", "라", "마"};
+        String [] keywords2 = {"망망", "밍?"};
+        String [] keywords3 = {"우리 엄마가", "그러기를", "제주감귤이", "최고다."};
 
-        set.add(new WordItem(1, "사자", "어흥하는 육식동물", "명사", keywords, keywords, 0));
-        set.add(new WordItem(2, "토끼", "깡총하는 초식동물", "명사", keywords, keywords, 0));
-        set.add(new WordItem(3, "타자", "날렵한 육식동물", "명사", keywords, keywords, 0));
-        set.add(new WordItem(4, "타조", "엄청큰 닭", "명사", keywords, keywords, 0));
-        set.add(new WordItem(5, "피카츄", "백만볼트", "명사", keywords, keywords, 0));
-        set.add(new WordItem(6, "강아지", "멍멍하는 잡식동물", "명사", keywords, keywords, 0));
+        set.add(new WordItem(1, "사자", "어흥하는 육식동물", "명사", keywords2, keywords, 0));
+        set.add(new WordItem(2, "토끼", "깡총하는 초식동물", "명사", keywords, keywords3, 0));
+        set.add(new WordItem(3, "타자", "날렵한 육식동물", "명사", keywords, keywords2, 0));
+        set.add(new WordItem(4, "타조", "엄청큰 닭", "명사", keywords, keywords3, 0));
+        set.add(new WordItem(5, "피카츄", "백만볼트", "명사", keywords3, keywords2, 0));
+        set.add(new WordItem(6, "강아지", "멍멍하는 잡식동물", "명사", keywords3, keywords, 0));
 
         int ids[]= {1, 2, 3, 4, 5, 6};
 
-        ApiItem result = new ApiItem("기린", set);
+        ArrayList<WordItem> items = new ArrayList<WordItem>();
+        items.add(new WordItem(1, "사자", "어흥하는 육식동물", "명사", keywords, keywords, 0));
+
+        SameSounds sameSound = new SameSounds(word, items);
+        HashSet<SameSounds> sameSoundses = new HashSet<SameSounds>();
+        sameSoundses.add(sameSound);
+
+        ApiItem result = new ApiItem("기린", set, sameSoundses);
 
         return result;
     }

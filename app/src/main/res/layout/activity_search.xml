@@ -11,24 +11,36 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         />
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_marginTop="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:orientation="horizontal"
-        >
-        <LinearLayout
-            android:id="@+id/searched_words"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/remove_keywords"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:src="@drawable/x_button"
+            android:layout_marginRight="6dp"/>
 
-        </LinearLayout>
-    </HorizontalScrollView>
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:id="@+id/searched_words"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
     <!--<android.support.v7.widget.RecyclerView-->
         <!--android:layout_marginTop="12dp"-->
         <!--android:layout_width="match_parent"-->

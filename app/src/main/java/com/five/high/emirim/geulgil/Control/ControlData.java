@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.ApiItem;
-import com.five.high.emirim.geulgil.Model.SearchingWord;
+import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
 import java.util.HashSet;
@@ -16,7 +16,6 @@ import java.util.Iterator;
  */
 
 public class ControlData {
-    private final String SEARCHING_STR_KEY = "searchingSTR";
     private int count;
 
     Context mContext;
@@ -33,14 +32,13 @@ public class ControlData {
         this.mContext = context;
     }
 
-
     // string에 해당하는
-    public HashSet<WordItem> searchingWord(HashSet<WordItem> hashSet, SearchingWord word) {
-        //TODO:
+    public HashSet<WordItem> searchingWord(HashSet<WordItem> hashSet, KeywordItem word) {
+        //TODO: 동음이의어 처리,,,  ㅜㅜㅜ
 
         String request = word.getWord() + "!" + String.valueOf(word.isMean());
         ApiItem relatives = api.getRelativesResult(request);
-        Iterator<WordItem> getIterator = relatives.getmWordItems().iterator();
+        Iterator<WordItem> getIterator = relatives.getRelatives().iterator();
 
         HashSet<WordItem> newSet = new HashSet<WordItem>();
 
@@ -65,5 +63,4 @@ public class ControlData {
             return newSet;
         }
     }
-
 }

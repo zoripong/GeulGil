@@ -2,6 +2,7 @@ package com.five.high.emirim.geulgil.Activity;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,11 +10,12 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.M;
-import com.five.high.emirim.geulgil.Model.SearchingWord;
+import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
@@ -44,21 +46,21 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String word = mEditText.getText().toString();
                 if(!word.equals("")) {
-                    SearchingWord searchingWord = new SearchingWord(word, isMean);
+                    KeywordItem keywordItem = new KeywordItem(word, isMean);
 
                     //.. get data
                     HashSet<WordItem> resultWordSet = new HashSet<WordItem>();
                     ControlData control = new ControlData();
-                    resultWordSet = control.searchingWord(resultWordSet, searchingWord);
+                    resultWordSet = control.searchingWord(resultWordSet, keywordItem);
 
                     if(M.isNull == true){
                         Toast.makeText(MainActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
                     }else{
-                        ArrayList<SearchingWord> searchingWords = new ArrayList<SearchingWord>();
-                        searchingWords.add(searchingWord);
+                        ArrayList<KeywordItem> keywordItems = new ArrayList<KeywordItem>();
+                        keywordItems.add(keywordItem);
 
                         Intent intent = new Intent(MainActivity.this, ResultCardViewActivity.class);
-                        intent.putExtra(SEARCHING_WORDS, searchingWords);
+                        intent.putExtra(SEARCHING_WORDS, keywordItems);
                         intent.putExtra(RESULT_WORDS, resultWordSet);
                         startActivity(intent);
                         finish();
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#787878"));
                 if(position == 0){
                     isMean = true;
                 }else if(position == 1){

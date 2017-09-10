@@ -6,12 +6,12 @@ import java.io.Serializable;
  * Created by 유리 on 2017-09-07.
  */
 
-public class SearchingWord implements Serializable {
+public class KeywordItem implements Serializable {
     private String word;
     private boolean isMean;
 
 
-    public SearchingWord(String word, boolean type) {
+    public KeywordItem(String word, boolean type) {
         this.word = word;
         this.isMean = type;
     }
