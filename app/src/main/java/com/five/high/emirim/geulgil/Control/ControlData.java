@@ -9,6 +9,7 @@ import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -21,6 +22,7 @@ public class ControlData {
 
     Context mContext;
     ConnectApi api;
+
 
 
     public ControlData (){
@@ -68,6 +70,17 @@ public class ControlData {
     }
 
     private void seperateSet(ApiItem apiItem) {
+        HashSet<SameSounds> relatives = apiItem.getRelatives();
+        Iterator<SameSounds> iterator = relatives.iterator();
 
+
+        while(iterator.hasNext()){
+            SameSounds now = iterator.next();
+            if(now.getWords().size() == 1){
+
+            }else{
+
+            }
+        }
     }
 }
