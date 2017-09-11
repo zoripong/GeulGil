@@ -10,24 +10,18 @@ import java.util.HashSet;
 
 public class ApiItem {
     private String title;
-    private HashSet<WordItem> relatives;
-    private HashSet<SameSounds> sameSoundses;
+    private HashSet<SameSounds> relatives;
 
-    public ApiItem(String title, HashSet<WordItem> relatives, HashSet<SameSounds> sameSoundses) {
+    public ApiItem(String title, HashSet<SameSounds> relatives) {
         this.title = title;
         this.relatives = relatives;
-        this.sameSoundses = sameSoundses;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public HashSet<WordItem> getRelatives() {
+    public HashSet<SameSounds> getRelatives() {
         return relatives;
-    }
-
-    public HashSet<SameSounds> getSameSoundses() {
-        return sameSoundses;
     }
 }

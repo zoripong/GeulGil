@@ -1,6 +1,6 @@
 package com.five.high.emirim.geulgil.Model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by 유리 on 2017-09-10.
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class SameSounds {
     String id;
-    ArrayList<WordItem> words;
+    HashSet<WordItem> words;
 
-    public SameSounds(String id, ArrayList<WordItem> words) {
+    public SameSounds(String id, HashSet<WordItem> words) {
         this.id = id;
         this.words = words;
     }
@@ -19,7 +19,8 @@ public class SameSounds {
         return id;
     }
 
-    public ArrayList<WordItem> getWords() {
+    public HashSet<WordItem> getWords() {
         return words;
     }
+
 }

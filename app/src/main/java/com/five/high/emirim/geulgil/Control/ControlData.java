@@ -6,6 +6,7 @@ import android.util.Log;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.ApiItem;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
 import java.util.HashSet;
@@ -32,23 +33,23 @@ public class ControlData {
         this.mContext = context;
     }
 
+    // Word Item -> api에서 SameSounds -> Word Item 으로 return
     // string에 해당하는
     public HashSet<WordItem> searchingWord(HashSet<WordItem> hashSet, KeywordItem word) {
         //TODO: 동음이의어 처리,,,  ㅜㅜㅜ
 
         String request = word.getWord() + "!" + String.valueOf(word.isMean());
-        ApiItem relatives = api.getRelativesResult(request);
-        Iterator<WordItem> getIterator = relatives.getRelatives().iterator();
+        ApiItem apiItem = api.getRelativesResult(request);
 
-        HashSet<WordItem> newSet = new HashSet<WordItem>();
+//        Iterator<SameSounds> getIterator = apiItem.getRelatives().iterator();
 
-        // 동일한 WordItem만 NewSet에 넣어줌
-        // 검색 결과가 없을 경우 처음 받은 hashSet을 넘김
-        // Set 특성상 동일한 데이터가 존재하지 않음
-        while (getIterator.hasNext()) {
-            WordItem now = getIterator.next();
-            // 동일한 WordItem이 있거나, 첫 검색이거나
-            if (hashSet.contains(now) || count == 0) {
+        seperateSet(apiItem);
+
+        HashSet<SameSounds> newSet = new HashSet<SameSounds>();
+
+        while(getIterator.hasNext()){
+            SameSounds now = getIterator.next();
+            if(hashSet.contains(now) || count == 0){
                 Log.e("같니?", now.toString());
                 newSet.add(now);
             }
@@ -62,5 +63,11 @@ public class ControlData {
             count++;
             return newSet;
         }
+
+
+    }
+
+    private void seperateSet(ApiItem apiItem) {
+
     }
 }
