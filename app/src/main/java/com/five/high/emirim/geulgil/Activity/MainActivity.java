@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
-import com.five.high.emirim.geulgil.Model.WordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
                     KeywordItem keywordItem = new KeywordItem(word, isMean);
 
                     //.. get data
-                    HashSet<WordItem> resultWordSet = new HashSet<WordItem>();
+                    HashSet<SameSounds> resultWordSet = new HashSet<SameSounds>();
                     ControlData control = new ControlData();
                     resultWordSet = control.searchingWord(resultWordSet, keywordItem);
 

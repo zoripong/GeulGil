@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.five.high.emirim.geulgil.Control.ControlData;
-import com.five.high.emirim.geulgil.Model.WordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.Iterator;
  */
 
 public class RecyclerSetter {
-    ArrayList<WordItem> items;
+    ArrayList<SameSounds> items;
     RecyclerAdapter adapter;
 //    WordItem[] item;
     String mWord[]; // 즐겨찾는 단어
@@ -31,7 +31,7 @@ public class RecyclerSetter {
     }
 
     //리사이클러 카드뷰 세팅
-    public boolean setRecyclerCardView(RecyclerView recyclerView, Context context, HashSet<WordItem> hashSet){
+    public boolean setRecyclerCardView(RecyclerView recyclerView, Context context, HashSet<SameSounds> hashSet){
         // TODO
         /*
         items = new ArrayList<WordItem>();
@@ -80,14 +80,15 @@ public class RecyclerSetter {
         recyclerView.setAdapter(new RecyclerAdapter(context, items, R.layout.content_main));
         return true;
 */
-        items = new ArrayList<WordItem>();
+        // TODO : 수정
+        items = new ArrayList<SameSounds>();
         mWord = new String[hashSet.size()];
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        Iterator<WordItem> iterator = hashSet.iterator();
+        Iterator<SameSounds> iterator = hashSet.iterator();
 
         while(iterator.hasNext()) {
             items.add(iterator.next());

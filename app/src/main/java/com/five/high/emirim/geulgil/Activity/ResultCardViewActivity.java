@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
@@ -28,7 +29,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
     RecyclerSetter recyclerSetter;
 
     ArrayList<KeywordItem> mKeywordItemSet;
-    HashSet<WordItem> mResultWordSet;
+    HashSet<SameSounds> mResultWordSet;
 
     DynamicButtonManager dynamicButtonManager;
 
@@ -39,7 +40,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mKeywordItemSet = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
-        mResultWordSet = (HashSet<WordItem>) intent.getSerializableExtra(RESULT_WORDS);
+        mResultWordSet = (HashSet<SameSounds>) intent.getSerializableExtra(RESULT_WORDS);
 
         ImageView searchButton = (ImageView) findViewById(R.id.iv_searchBtn);
 

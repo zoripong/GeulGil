@@ -1,16 +1,18 @@
 package com.five.high.emirim.geulgil.Model;
 
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by 유리 on 2017-09-10.
  */
 
-public class SameSounds {
+public class SameSounds implements Serializable {
     String id;
-    HashSet<WordItem> words;
+    ArrayList<WordItem> words;
+    private boolean isSingle;
 
-    public SameSounds(String id, HashSet<WordItem> words) {
+    public SameSounds(String id, ArrayList<WordItem> words) {
         this.id = id;
         this.words = words;
     }
@@ -19,8 +21,15 @@ public class SameSounds {
         return id;
     }
 
-    public HashSet<WordItem> getWords() {
+    public ArrayList<WordItem> getWords() {
         return words;
     }
 
+    public boolean isSingle() {
+        return isSingle;
+    }
+
+    public void setSingle(boolean single) {
+        isSingle = single;
+    }
 }

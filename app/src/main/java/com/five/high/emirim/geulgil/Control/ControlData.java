@@ -7,9 +7,7 @@ import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.ApiItem;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
-import com.five.high.emirim.geulgil.Model.WordItem;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -18,16 +16,11 @@ import java.util.Iterator;
  */
 
 public class ControlData {
-    private int count;
-
     Context mContext;
-    ConnectApi api;
-
-
+    ConnectApi connectApi;
 
     public ControlData (){
-        api = new ConnectApi();
-        count = 0;
+        connectApi = new ConnectApi();
     }
 
     public ControlData(Context context) {
@@ -37,21 +30,26 @@ public class ControlData {
 
     // Word Item -> api에서 SameSounds -> Word Item 으로 return
     // string에 해당하는
-    public HashSet<WordItem> searchingWord(HashSet<WordItem> hashSet, KeywordItem word) {
+    public HashSet<SameSounds> searchingWord(HashSet<SameSounds> hashSet, KeywordItem word) {
+        // hashSet = 검색 결과 누적 집합
+        // word = 요청 검색어
+        // apiItem = 새로운 검색 결과
+
         //TODO: 동음이의어 처리,,,  ㅜㅜㅜ
 
+
         String request = word.getWord() + "!" + String.valueOf(word.isMean());
-        ApiItem apiItem = api.getRelativesResult(request);
+        ApiItem apiItem = connectApi.getRelativesResult(request);
 
-//        Iterator<SameSounds> getIterator = apiItem.getRelatives().iterator();
-
-        seperateSet(apiItem);
+        apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
 
         HashSet<SameSounds> newSet = new HashSet<SameSounds>();
 
+        Iterator<SameSounds> getIterator = apiItem.getRelatives().iterator();
+
         while(getIterator.hasNext()){
             SameSounds now = getIterator.next();
-            if(hashSet.contains(now) || count == 0){
+            if(hashSet.contains(now) || hashSet.size() == 0){
                 Log.e("같니?", now.toString());
                 newSet.add(now);
             }
@@ -62,25 +60,24 @@ public class ControlData {
             return hashSet;
         } else {
             M.isNull = false;
-            count++;
             return newSet;
         }
-
-
     }
 
-    private void seperateSet(ApiItem apiItem) {
+    private ApiItem seperateSet(ApiItem apiItem) {
         HashSet<SameSounds> relatives = apiItem.getRelatives();
         Iterator<SameSounds> iterator = relatives.iterator();
 
-
         while(iterator.hasNext()){
             SameSounds now = iterator.next();
-            if(now.getWords().size() == 1){
-
-            }else{
-
-            }
+            if(now.getWords().size() == 1)
+                now.setSingle(true);
+            else if(now.getWords().size() > 1)
+                now.setSingle(false);
+            else
+                iterator.remove();
         }
+        return apiItem;
     }
+
 }

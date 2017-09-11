@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
-import com.five.high.emirim.geulgil.Model.WordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class DetailViewActivity extends AppCompatActivity {
     TextView mWord;
     TextView mPart;
     TextView mMean;
-    WordItem mItem;
+    SameSounds mItem;
 //    Button mYesButton;
 //    Button mNoButton;
 
@@ -32,20 +32,24 @@ public class DetailViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
-        mItem = (WordItem) getIntent().getSerializableExtra(SELECT_WORD);
+        mItem = (SameSounds) getIntent().getSerializableExtra(SELECT_WORD);
         init();
 
-        mWord.setText(mItem.getmWord());
-        mPart.setText("["+mItem.getmPart()+"]");
-        mMean.setText(mItem.getmMean());
+        mWord.setText(mItem.getId());
+        mPart.setText("[" + mItem.getWords().get(0).getmPart() + "]");
 
-        dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRoot);
-
-        String [] keywords = mItem.getmMeanKeyword();
-        setKeyword(keywords, true);
-        keywords = mItem.getmSimilarKeyword();
-        setKeyword(keywords, false);
-
+        if(mItem.isSingle()) {
+            mMean.setText(mItem.getWords().get(0).getmMean());
+            // TODO: 2017-09-11 모듈화
+            String[] keywords = mItem.getWords().get(0).getmMeanKeyword();
+            setKeyword(keywords, true);
+            keywords = mItem.getWords().get(0).getmSimilarKeyword();
+            setKeyword(keywords, false);
+        }else{
+            for(int i = 0; i<mItem.getWords().size(); i++){
+                // // TODO: 2017-09-11 ..밍ㅁ..밍.. 
+            }
+        }
     }
     private void init(){
         mRoot = (LinearLayout)findViewById(R.id.root);
@@ -54,8 +58,7 @@ public class DetailViewActivity extends AppCompatActivity {
         mWord = (TextView)findViewById(R.id.tv_word);
         mPart = (TextView)findViewById(R.id.tv_position);
         mMean = (TextView)findViewById(R.id.tv_mean);
-
-
+        dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRoot);
     }
 
     private void setKeyword(String [] keywords, boolean isMean){
@@ -70,28 +73,4 @@ public class DetailViewActivity extends AppCompatActivity {
             dynamicButtonManager.setDynamicButton(keywordItems, mSimilarLocation, false);
 
     }
-//    public void onBackPressed() {
-//        Dialog dialog = new Dialog(DetailViewActivity.this, R.style.MyDialog);
-//        dialog.setContentView(R.layout.dialog);
-//        dialog.show();
-//
-//        mYesButton =(Button)dialog.findViewById(R.id.dialog_button_yes);
-//        mNoButton =(Button)dialog.findViewById(R.id.dialog_button_no);
-//        mYesButton.setEnabled(true);
-//        mNoButton.setEnabled(true);
-//
-//        mYesButton.setOnClickListener(new View.OnClickListener(){
-//            public  void onClick(View v){
-//
-//                Intent intent =new Intent(DetailViewActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
-//        mNoButton.setOnClickListener(new View.OnClickListener(){
-//            public  void onClick(View v){
-//                finish();
-//            }
-//        });
-//    }
 }

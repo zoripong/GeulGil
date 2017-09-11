@@ -4,8 +4,20 @@ import com.five.high.emirim.geulgil.Model.ApiItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+
 
 /**
  * Created by 유리 on 2017-08-17.
@@ -13,34 +25,77 @@ import java.util.HashSet;
 
 public class ConnectApi {
 
+    public String connectServer(String request){
+        String queryUrl="http://52.78.168.169/request/";
+        String json = null;
+        try {
+            URL url= new URL(queryUrl);
+            HttpURLConnection httpURL = (HttpURLConnection)url.openConnection();
+            httpURL.setRequestMethod("POST");
+            httpURL.setDoInput(true);
+            httpURL.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            OutputStream os = httpURL.getOutputStream();
+            os.write(request.getBytes("utf-8") );
+            os.flush();
+            os.close();
+
+            BufferedReader br = new BufferedReader( new InputStreamReader( httpURL.getInputStream(), "utf-8" ), httpURL.getContentLength() );
+            json = br.toString();
+            br.close();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return json;
+    }
+
     // TODO : 서버와 연결하여 json을 가지고 와서 파싱한 APIItem  리턴
-    public ApiItem getRelativesResult(String word) {
-        /*
-        Test용 코드
-         */
-        HashSet<WordItem> set = new HashSet<WordItem>();
-        String [] keywords = {"가", "나", "다", "라", "마"};
-        String [] keywords2 = {"망망", "밍?"};
-        String [] keywords3 = {"우리 엄마가", "그러기를", "제주감귤이", "최고다."};
+    public ApiItem getRelativesResult(String request) {
 
-        set.add(new WordItem(1, "사자", "어흥하는 육식동물", "명사", keywords2, keywords, 0));
-        set.add(new WordItem(2, "토끼", "깡총하는 초식동물", "명사", keywords, keywords3, 0));
-        set.add(new WordItem(3, "타자", "날렵한 육식동물", "명사", keywords, keywords2, 0));
-        set.add(new WordItem(4, "타조", "엄청큰 닭", "명사", keywords, keywords3, 0));
-        set.add(new WordItem(5, "피카츄", "백만볼트", "명사", keywords3, keywords2, 0));
-        set.add(new WordItem(6, "강아지", "멍멍하는 잡식동물", "명사", keywords3, keywords, 0));
+        String json = connectServer(request);
 
-        int ids[]= {1, 2, 3, 4, 5, 6};
+        try {
+            JSONObject obj = new JSONObject(json);
+            String title = obj.getString("title");
+            JSONArray relatives = obj.getJSONArray("relatives");
 
-        ArrayList<WordItem> items = new ArrayList<WordItem>();
-        items.add(new WordItem(1, "사자", "어흥하는 육식동물", "명사", keywords, keywords, 0));
+            HashSet<SameSounds> sameSoundsSet = new HashSet<SameSounds>();
 
-        SameSounds sameSound = new SameSounds(word, items);
-        HashSet<SameSounds> sameSoundses = new HashSet<SameSounds>();
-        sameSoundses.add(sameSound);
+            for (int i = 0; i < relatives.length(); i++) {
 
-        ApiItem result = new ApiItem("기린", set, sameSoundses);
+                String ids = relatives.getJSONObject(i).getString("id");
+                JSONArray sameSounds = relatives.getJSONObject(i).getJSONArray("samesound");
+                ArrayList<WordItem> wordItems = new ArrayList<WordItem>();
 
-        return result;
+                for (int j = 0; j < sameSounds.length(); j++) {
+                    int id = sameSounds.getJSONObject(j).getInt("id");
+                    String word = sameSounds.getJSONObject(j).getString("word");
+                    String mean = sameSounds.getJSONObject(j).getString("mean");
+                    String part = sameSounds.getJSONObject(j).getString("part");
+                    JSONArray meankeyword = sameSounds.getJSONObject(j).getJSONArray("meankeyword");
+                    String m[] = new String[meankeyword.length()];
+                    for (int k = 0; k < meankeyword.length(); k++)
+                        m[k] = meankeyword.getString(k);
+                    JSONArray similarkeyword = sameSounds.getJSONObject(i).getJSONArray("similarkeyword");
+                    String s[] = new String[similarkeyword.length()];
+                    for (int k = 0; k < similarkeyword.length(); k++)
+                        s[k] = similarkeyword.getString(k);
+                    int recommend = Integer.parseInt(sameSounds.getJSONObject(i).getString("recommend"));
+
+                    wordItems.add(new WordItem(id, word, mean, part, m, s, recommend));
+                }
+
+                sameSoundsSet.add(new SameSounds(ids, wordItems));
+
+            }
+
+            return new ApiItem(title, sameSoundsSet);
+        }catch(JSONException e){
+            return null;
+        }
     }
 }

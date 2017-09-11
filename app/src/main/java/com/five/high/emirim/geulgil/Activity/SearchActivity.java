@@ -19,7 +19,7 @@ import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
-import com.five.high.emirim.geulgil.Model.WordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     private boolean isMean = true;
 
     ArrayList<KeywordItem> mKeywordItemList;
-    HashSet<WordItem> mResultWordSet;
+    HashSet<SameSounds> mResultWordSet;
 
     DynamicButtonManager dynamicButtonManager;
 
@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         mKeywordItemList = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
-        mResultWordSet = (HashSet<WordItem>) intent.getSerializableExtra(RESULT_WORDS);
+        mResultWordSet = (HashSet<SameSounds>) intent.getSerializableExtra(RESULT_WORDS);
 
         mKeywordsLocation = (LinearLayout) findViewById(R.id.searched_words);
         mRootLayout = (LinearLayout) findViewById(R.id.root);

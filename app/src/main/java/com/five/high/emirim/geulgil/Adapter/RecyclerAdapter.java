@@ -20,7 +20,7 @@ import com.five.high.emirim.geulgil.Activity.DetailViewActivity;
 import com.five.high.emirim.geulgil.Activity.MainActivity;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
-import com.five.high.emirim.geulgil.Model.WordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private final String SELECT_WORD = "selectedWord";
     Context context;
-    List<WordItem> items;
+    List<SameSounds> items;
 
-    public RecyclerAdapter(Context context, List<WordItem> items) {
+    public RecyclerAdapter(Context context, List<SameSounds> items) {
         this.context = context;
         this.items = items;
     }
@@ -46,24 +46,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final WordItem item = items.get(position);
+        final SameSounds item = items.get(position);
 
-        holder.mTvWord.setText(item.getmWord());
-        holder.mTvMean.setText(item.getmMean());
+            holder.mTvWord.setText(item.getId());
+            holder.mTvMean.setText(item.getWords().get(0).getmMean());
 
-        String [] mean = item.getmMeanKeyword();
-        String [] similar = item.getmSimilarKeyword();
+            String[] mean = item.getWords().get(0).getmMeanKeyword();
+            String[] similar = item.getWords().get(0).getmSimilarKeyword();
 
-        ArrayList<KeywordItem> keywords = new ArrayList<KeywordItem>();
-        DynamicButtonManager dynamicButtonManager = new DynamicButtonManager(context, holder.root);
+            ArrayList<KeywordItem> keywords = new ArrayList<KeywordItem>();
+            DynamicButtonManager dynamicButtonManager = new DynamicButtonManager(context, holder.root);
 
-        for(int i = 0; i<mean.length; i++)
-            keywords.add(new KeywordItem(mean[i], true));
+            for (int i = 0; i < mean.length; i++)
+                keywords.add(new KeywordItem(mean[i], true));
+            dynamicButtonManager.setDynamicButton(keywords, holder.mMeanKeywordLocation, false);
+            keywords.clear();
 
-        for(int i = 0; i<similar.length; i++)
-            keywords.add(new KeywordItem(similar[i], false));
+            for (int i = 0; i < similar.length; i++)
+                keywords.add(new KeywordItem(similar[i], false));
 
-        dynamicButtonManager.setDynamicButton(keywords, holder.mKeywordLocation ,false);
+            dynamicButtonManager.setDynamicButton(keywords, holder.mSimilarKeywordLocation, false);
+
+        if(!item.isSingle()){
+
+        }
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,14 +77,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 Intent intent = new Intent(v.getContext(), DetailViewActivity.class);
                 intent.putExtra(SELECT_WORD, items.get(position));
                 v.getContext().startActivity(intent);
-
             }
         });
 
         holder.mXbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                WordItem itemLabel = items.get(position);
+                SameSounds itemLabel = items.get(position);
                 items.remove(position);
                 if(items.size()==0){
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
@@ -87,9 +92,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     Toast.makeText(context, "카드를 모두 삭제하셨습니다.", Toast.LENGTH_SHORT).show();
                 }
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(position,items.size());
+                notifyItemRangeChanged(position, items.size());
             }
         });
+
     }
 
     @Override
@@ -102,7 +108,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         CardView cardview;
         TextView mTvWord;
         TextView mTvMean;
-        LinearLayout mKeywordLocation;
+        LinearLayout mMeanKeywordLocation;
+        LinearLayout mSimilarKeywordLocation;
         ImageView mXbutton;
 
         public ViewHolder(View itemView) {
@@ -111,7 +118,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             mTvWord = (TextView) itemView.findViewById(R.id.tv_word);
             mTvMean = (TextView) itemView.findViewById(R.id.tv_mean);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
-            mKeywordLocation = (LinearLayout)itemView.findViewById(R.id.keywords_location);
+            mMeanKeywordLocation = (LinearLayout)itemView.findViewById(R.id.mean_keywords_location);
+            mSimilarKeywordLocation = (LinearLayout)itemView.findViewById(R.id.similar_keywords_location);
             mXbutton = (ImageView) itemView.findViewById(R.id.x_button);
         }
     }
