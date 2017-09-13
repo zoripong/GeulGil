@@ -35,16 +35,16 @@ public class ControlData {
         // word = 요청 검색어
         // apiItem = 새로운 검색 결과
 
-        //TODO: 동음이의어 처리,,,  ㅜㅜㅜ
         String request = word.getWord() + "/" + String.valueOf(word.isMean())+"/";
 
         ApiItem apiItem = null;
 
         apiItem = connectApi.getRelativesResult(request);
 
-        if(apiItem == null)
-            Log.e("connect 완료", "apiItem == null");
-
+        if(apiItem == null) {
+            Log.e("connect 실패", "apiItem == null");
+            apiItem = connectApi.getRelativesResult(request);
+        }
         apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
 
         HashSet<SameSounds> newSet = new HashSet<SameSounds>();

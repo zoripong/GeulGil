@@ -1,29 +1,25 @@
 package com.five.high.emirim.geulgil.Activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
+import com.five.high.emirim.geulgil.Control.SharedPreferencesManager;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.SearchRecordItem;
 import com.five.high.emirim.geulgil.R;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 public class DetailViewActivity extends AppCompatActivity {
     private int SEARCHING_WORD_ID = 0x8000;
-    private final String RECORD_SEARCHING = "recordOfSearching";
     private final String SELECT_WORD = "selectedWord";
 
     LinearLayout mRoot;
@@ -32,6 +28,7 @@ public class DetailViewActivity extends AppCompatActivity {
     LinearLayout mMeanLocation;
 
     DynamicButtonManager dynamicButtonManager;
+    SharedPreferencesManager sharedPreferencesManager;
 
     TextView mWord;
     TextView mPart;
@@ -70,9 +67,16 @@ public class DetailViewActivity extends AppCompatActivity {
 
         // 검색 기록 저장
         SearchRecordItem item = new SearchRecordItem(mItem.getId(), mItem.getWordItems().get(0).getMean());
-        ArrayList<SearchRecordItem> items = loadSharedPreferencesLogList(getApplicationContext());
+        ArrayList<SearchRecordItem> items = sharedPreferencesManager.loadSharedPreferencesLogList(getApplicationContext());
         items.add(item);
-        saveSharedPreferencesLogList(getApplicationContext(), items);
+
+        HashSet<SearchRecordItem> set = new HashSet<>(items);
+        items = new ArrayList<SearchRecordItem>(set);
+
+        sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), items);
+        for(int i = 0; i<items.size(); i++){
+            Log.e("before", items.get(i).toString());
+        }
         // 검색 기록 저장
     }
 
@@ -84,6 +88,7 @@ public class DetailViewActivity extends AppCompatActivity {
         mMeanLocation = (LinearLayout)findViewById(R.id.mean_location);
         mPart = (TextView)findViewById(R.id.tv_position);
         dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRoot);
+        sharedPreferencesManager = new SharedPreferencesManager();
     }
 
     private void setKeyword(String [] keywords, boolean isMean){
@@ -98,28 +103,5 @@ public class DetailViewActivity extends AppCompatActivity {
             dynamicButtonManager.setDynamicButton(keywordItems, mSimilarKeywordsLocation, false);
 
     }
-    private void saveSharedPreferencesLogList(Context context, ArrayList<SearchRecordItem> searchRecordItems) {
-        SharedPreferences mPrefs = context.getSharedPreferences(RECORD_SEARCHING, context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(searchRecordItems);
-        prefsEditor.putString("myJson", json);
-        prefsEditor.commit();
-    }
 
-
-    private ArrayList<SearchRecordItem> loadSharedPreferencesLogList(Context context) {
-        ArrayList<SearchRecordItem> recordItems;
-        SharedPreferences mPrefs = context.getSharedPreferences(RECORD_SEARCHING, context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = mPrefs.getString("myJson", "");
-        if (json.isEmpty()) {
-            recordItems = new ArrayList<SearchRecordItem>();
-        } else {
-            Type type = new TypeToken<List<SearchRecordItem>>() {
-            }.getType();
-            recordItems = gson.fromJson(json, type);
-        }
-        return recordItems;
-    }
 }

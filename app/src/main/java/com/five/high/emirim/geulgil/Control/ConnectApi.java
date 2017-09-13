@@ -14,10 +14,9 @@ import java.util.Iterator;
 
 import retrofit2.Call;
 
-
+// // TODO: 2017-09-13 Progress Bar
 
 public class ConnectApi{
-    // TODO : 서버와 연결하여 json을 가지고 와서 파싱한 APIItem  리턴
     String title;
     ApiItem apiItem; //리턴할 ApiItem
 
