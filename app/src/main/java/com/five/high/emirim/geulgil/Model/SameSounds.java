@@ -1,7 +1,7 @@
 package com.five.high.emirim.geulgil.Model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+        import java.io.Serializable;
+        import java.util.ArrayList;
 
 /**
  * Created by 유리 on 2017-09-10.
@@ -9,20 +9,20 @@ import java.util.ArrayList;
 
 public class SameSounds implements Serializable {
     String id;
-    ArrayList<WordItem> words;
+    ArrayList<WordItem> samesound;
     private boolean isSingle;
 
     public SameSounds(String id, ArrayList<WordItem> words) {
         this.id = id;
-        this.words = words;
+        this.samesound = words;
     }
 
     public String getId() {
         return id;
     }
 
-    public ArrayList<WordItem> getWords() {
-        return words;
+    public ArrayList<WordItem> getWordItems() {
+        return samesound;
     }
 
     public boolean isSingle() {
@@ -33,3 +33,4 @@ public class SameSounds implements Serializable {
         isSingle = single;
     }
 }
+

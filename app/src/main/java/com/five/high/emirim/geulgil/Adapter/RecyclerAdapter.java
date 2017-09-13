@@ -21,12 +21,11 @@ import com.five.high.emirim.geulgil.Activity.MainActivity;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
+import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-// TODO: 2017-09-10 : FLOWLayout , 동음이의어 카드,, 밍..밍..밍... !
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private final String SELECT_WORD = "selectedWord";
@@ -48,11 +47,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final SameSounds item = items.get(position);
 
-            holder.mTvWord.setText(item.getId());
-            holder.mTvMean.setText(item.getWords().get(0).getmMean());
+        holder.mTvWord.setText(item.getId());
 
-            String[] mean = item.getWords().get(0).getmMeanKeyword();
-            String[] similar = item.getWords().get(0).getmSimilarKeyword();
+        ArrayList<WordItem> wordItem = item.getWordItems();
+
+        Toast.makeText(context, item.getId(), Toast.LENGTH_SHORT).show();
+//        if(WordItem item = wordItem.get(position))
+        Toast.makeText(context, wordItem.size()+"/"+position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, wordItem.get(position-1).toString(), Toast.LENGTH_SHORT).show();
+
+        if(item.isSingle()){
+            holder.mTvMean.setText(wordItem.get(0).getMean());
+
+            String[] mean = wordItem.get(0).getMeankeyword();
+            String[] similar = wordItem.get(0).getSimilarkeyword();
 
             ArrayList<KeywordItem> keywords = new ArrayList<KeywordItem>();
             DynamicButtonManager dynamicButtonManager = new DynamicButtonManager(context, holder.root);
@@ -66,9 +74,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 keywords.add(new KeywordItem(similar[i], false));
 
             dynamicButtonManager.setDynamicButton(keywords, holder.mSimilarKeywordLocation, false);
-
-        if(!item.isSingle()){
-
+        }else{
+            holder.mTvMean.setText("외 " + String.valueOf(item.getWordItems().size()-1)+"개의 결과");
         }
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {

@@ -8,11 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
+import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
-import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
@@ -22,6 +21,9 @@ import java.util.HashSet;
 // TODO: 2017-09-10 : 키워드 단어 결과 연결,,!
 
 public class ResultCardViewActivity extends AppCompatActivity {
+    private final String PREFS_TAG = "SharedPrefs";
+    private final String PRODUCT_TAG = "MyProduct";
+
     private final String SEARCHING_WORDS = "searching word";
     private final String RESULT_WORDS = "result word";
 
@@ -62,5 +64,20 @@ public class ResultCardViewActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // 검색 기록 저장
+
     }
+//    http://findnerd.com/list/view/Save-ArrayList-of-Object-into-Shared-Preferences-in-Android/510?page=10&ppage=3
+    //    private List<SearchRecordItem> getDataFromSharedPreferences(){
+//        Gson gson = new Gson();
+//        List<SearchRecordItem> recordItems = new ArrayList<>();
+//        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(PREFS_TAG, Context.MODE_PRIVATE);
+//        String jsonPreferences = sharedPref.getString(PRODUCT_TAG, "");
+//
+//        Type type = new TypeToken<List<SearchRecordItem>>() {}.getType();
+//        productFromShared = gson.fromJson(jsonPreferences, type);
+//
+//        return preferences;
+//    }
 }

@@ -24,4 +24,13 @@ public class ApiItem {
     public HashSet<SameSounds> getRelatives() {
         return relatives;
     }
+
+    @Override
+    public String toString() {
+        return "ApiItem{" +
+                "title='" + title + '\'' +
+                ", relatives=" +
+                '}';
+    }
+
 }

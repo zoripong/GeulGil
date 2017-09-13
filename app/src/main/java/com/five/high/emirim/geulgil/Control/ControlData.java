@@ -36,10 +36,14 @@ public class ControlData {
         // apiItem = 새로운 검색 결과
 
         //TODO: 동음이의어 처리,,,  ㅜㅜㅜ
+        String request = word.getWord() + "/" + String.valueOf(word.isMean())+"/";
 
+        ApiItem apiItem = null;
 
-        String request = word.getWord() + "!" + String.valueOf(word.isMean());
-        ApiItem apiItem = connectApi.getRelativesResult(request);
+        apiItem = connectApi.getRelativesResult(request);
+
+        if(apiItem == null)
+            Log.e("connect 완료", "apiItem == null");
 
         apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
 
@@ -70,9 +74,9 @@ public class ControlData {
 
         while(iterator.hasNext()){
             SameSounds now = iterator.next();
-            if(now.getWords().size() == 1)
+            if(now.getWordItems().size() == 1)
                 now.setSingle(true);
-            else if(now.getWords().size() > 1)
+            else if(now.getWordItems().size() > 1)
                 now.setSingle(false);
             else
                 iterator.remove();
@@ -81,3 +85,4 @@ public class ControlData {
     }
 
 }
+

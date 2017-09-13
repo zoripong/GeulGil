@@ -99,10 +99,5 @@ public class RecyclerSetter {
         return true;
 
     }
-
-
-    public RecyclerAdapter getAdapter() {
-        return adapter;
-    }
 }
 

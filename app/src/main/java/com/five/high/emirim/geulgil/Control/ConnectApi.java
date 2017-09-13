@@ -1,101 +1,117 @@
 package com.five.high.emirim.geulgil.Control;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.five.high.emirim.geulgil.Model.ApiItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+
+import retrofit2.Call;
 
 
-/**
- * Created by 유리 on 2017-08-17.
- */
 
-public class ConnectApi {
-
-    public String connectServer(String request){
-        String queryUrl="http://52.78.168.169/request/";
-        String json = null;
-        try {
-            URL url= new URL(queryUrl);
-            HttpURLConnection httpURL = (HttpURLConnection)url.openConnection();
-            httpURL.setRequestMethod("POST");
-            httpURL.setDoInput(true);
-            httpURL.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-            OutputStream os = httpURL.getOutputStream();
-            os.write(request.getBytes("utf-8") );
-            os.flush();
-            os.close();
-
-            BufferedReader br = new BufferedReader( new InputStreamReader( httpURL.getInputStream(), "utf-8" ), httpURL.getContentLength() );
-            json = br.toString();
-            br.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return json;
-    }
-
+public class ConnectApi{
     // TODO : 서버와 연결하여 json을 가지고 와서 파싱한 APIItem  리턴
+    String title;
+    ApiItem apiItem; //리턴할 ApiItem
+
+
     public ApiItem getRelativesResult(String request) {
 
-        String json = connectServer(request);
-
+        connectServer(request);
         try {
-            JSONObject obj = new JSONObject(json);
-            String title = obj.getString("title");
-            JSONArray relatives = obj.getJSONArray("relatives");
+            Thread.sleep(1700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-            HashSet<SameSounds> sameSoundsSet = new HashSet<SameSounds>();
+        Log.e("getRelativesResult","getRelativesResult종료");
+        return apiItem;
+    }
 
-            for (int i = 0; i < relatives.length(); i++) {
+    public void connectServer(final String request) {
 
-                String ids = relatives.getJSONObject(i).getString("id");
-                JSONArray sameSounds = relatives.getJSONObject(i).getJSONArray("samesound");
-                ArrayList<WordItem> wordItems = new ArrayList<WordItem>();
+        new AsyncTask<Void, Void, String>() {
 
-                for (int j = 0; j < sameSounds.length(); j++) {
-                    int id = sameSounds.getJSONObject(j).getInt("id");
-                    String word = sameSounds.getJSONObject(j).getString("word");
-                    String mean = sameSounds.getJSONObject(j).getString("mean");
-                    String part = sameSounds.getJSONObject(j).getString("part");
-                    JSONArray meankeyword = sameSounds.getJSONObject(j).getJSONArray("meankeyword");
-                    String m[] = new String[meankeyword.length()];
-                    for (int k = 0; k < meankeyword.length(); k++)
-                        m[k] = meankeyword.getString(k);
-                    JSONArray similarkeyword = sameSounds.getJSONObject(i).getJSONArray("similarkeyword");
-                    String s[] = new String[similarkeyword.length()];
-                    for (int k = 0; k < similarkeyword.length(); k++)
-                        s[k] = similarkeyword.getString(k);
-                    int recommend = Integer.parseInt(sameSounds.getJSONObject(i).getString("recommend"));
+            @Override
+            protected String doInBackground(Void... params) {
 
-                    wordItems.add(new WordItem(id, word, mean, part, m, s, recommend));
+                com.five.high.emirim.geulgil.Model.RetrofitService retrofitService
+                        = com.five.high.emirim.geulgil.Model.RetrofitService.retrofit.create(com.five.high.emirim.geulgil.Model.RetrofitService.class);
+
+                Call<ApiItem> call = retrofitService.getItem(request);
+
+
+                try {
+                    ApiItem returnApiItem = call.execute().body();
+                    title=returnApiItem.getTitle();
+
+                    HashSet<SameSounds> responeSamesound= new HashSet<SameSounds>(returnApiItem.getRelatives());
+                    Iterator<SameSounds> iterator = responeSamesound.iterator();
+
+                    HashSet<SameSounds> sameSoundsSet = new HashSet<SameSounds>();
+
+                    while(iterator.hasNext()) {
+                        SameSounds samesounds = iterator.next();
+                        if (samesounds == null)
+                            iterator.remove();
+
+                        String ids = samesounds.getId();
+                        //               Log.e("connect성공", String.valueOf(samesounds.getId()));
+
+                        ArrayList<WordItem> wordItems = new ArrayList<WordItem>();
+
+                        for(int i=0;i<samesounds.getWordItems().size();i++) { //samesound 파싱해서 wordItem 생성후 sameSoundsSet에 add
+                            int id = samesounds.getWordItems().get(i).getId();
+                            String word = samesounds.getWordItems().get(i).getWord();
+                            String mean = samesounds.getWordItems().get(i).getMean();
+                            String part = samesounds.getWordItems().get(i).getPart();
+                            String[] meankeyword = samesounds.getWordItems().get(i).getMeankeyword();
+                            String[] similarkeyword = samesounds.getWordItems().get(i).getSimilarkeyword();
+                            int recommend = samesounds.getWordItems().get(i).getRecommend();
+
+                            wordItems.add(new WordItem(id, word, mean, part, meankeyword, similarkeyword, recommend));
+
+//                            Log.e("connect성공 id", String.valueOf(id));
+//                            Log.e("connect성공 word", word);
+//                            Log.e("connect성공 mean", mean);
+//                            Log.e("connect성공 part", part);
+//                            for(int j=0;j<meankeyword.length;j++)
+//                                Log.e("connect성공 mkeyword", meankeyword[j]);
+//                            for(int j=0;j<similarkeyword.length;j++)
+//                                Log.e("connect성공 skeyword", similarkeyword[j]);
+                        }
+
+                        sameSoundsSet.add(new SameSounds(ids, wordItems));
+
+                    }
+                    //return
+                    apiItem = new ApiItem(title, sameSoundsSet);
+                    Log.e("connect 완료", String.valueOf(apiItem.getTitle()));
+
+                    return null;
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-                sameSoundsSet.add(new SameSounds(ids, wordItems));
-
+                return null;
             }
 
-            return new ApiItem(title, sameSoundsSet);
-        }catch(JSONException e){
-            return null;
-        }
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+
+            }
+        }.execute();
+
     }
+
 }

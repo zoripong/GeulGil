@@ -9,48 +9,48 @@ import java.util.Arrays;
 
 public class WordItem implements Serializable{
     private int id;
-    private String mWord;
-    private String mMean;
-    private String mPart;
-    private String [] mMeanKeyword;
-    private String [] mSimilarKeyword;
+    private String word;
+    private String mean;
+    private String part;
+    private String [] meankeyword;
+    private String [] similarkeyword;
     private int recommend;
 
     public int getId() {
         return id;
     }
 
-    public String getmWord() {
-        return mWord;
+    public String getWord() {
+        return word;
     }
 
-    public String getmMean() {
-        return mMean;
+    public String getMean() {
+        return mean;
     }
 
-    public String getmPart() {
-        return mPart;
+    public String getPart() {
+        return part;
     }
 
-    public String[] getmMeanKeyword() {
-        return mMeanKeyword;
+    public String[] getMeankeyword() {
+        return meankeyword;
     }
 
-    public String[] getmSimilarKeyword() {
-        return mSimilarKeyword;
+    public String[] getSimilarkeyword() {
+        return similarkeyword;
     }
 
     public int getRecommend() {
         return recommend;
     }
 
-    public WordItem(int id, String mWord, String mMean, String mPart, String [] mMeanKeyword, String [] mSimilarKeyword, int recommend) {
+    public WordItem(int id, String word, String mean, String part, String [] meankeyword, String [] similarkeyword, int recommend) {
         this.id = id;
-        this.mWord = mWord;
-        this.mMean = mMean;
-        this.mPart = mPart;
-        this.mMeanKeyword = mMeanKeyword;
-        this.mSimilarKeyword = mSimilarKeyword;
+        this.word = word;
+        this.mean = mean;
+        this.part = part;
+        this.meankeyword = meankeyword;
+        this.similarkeyword = similarkeyword;
         this.recommend = recommend;
     }
 
@@ -58,11 +58,11 @@ public class WordItem implements Serializable{
     public String toString() {
         return "WordItem{" +
                 "id=" + id +
-                ", mWord='" + mWord + '\'' +
-                ", mMean='" + mMean + '\'' +
-                ", mPart='" + mPart + '\'' +
-                ", mMeanKeyword=" + Arrays.toString(mMeanKeyword) +
-                ", mSimilarKeyword=" + Arrays.toString(mSimilarKeyword) +
+                ", word='" + word + '\'' +
+                ", mean='" + mean + '\'' +
+                ", part='" + part + '\'' +
+                ", meankeyword=" + Arrays.toString(meankeyword) +
+                ", similarkeyword=" + Arrays.toString(similarkeyword) +
                 ", recommend=" + recommend +
                 '}';
     }
