@@ -51,28 +51,25 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
 
         ArrayList<WordItem> wordItem = item.getWordItems();
 
-        Toast.makeText(context, item.getId(), Toast.LENGTH_SHORT).show();
-//        if(WordItem item = wordItem.get(position))
-        Toast.makeText(context, wordItem.size()+"/"+position, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(context, wordItem.get(position-1).toString(), Toast.LENGTH_SHORT).show();
-
         if(item.isSingle()){
-            holder.mTvMean.setText(wordItem.get(0).getMean());
+            String mean = wordItem.get(0).getMean();
+            if(mean.length() >= 30) mean = mean.substring(0, 30)+"...";
+            holder.mTvMean.setText(mean);
 
-            String[] mean = wordItem.get(0).getMeankeyword();
-            String[] similar = wordItem.get(0).getSimilarkeyword();
+            String[] meankeyword = wordItem.get(0).getMeankeyword();
+            String[] similarkeyword = wordItem.get(0).getSimilarkeyword();
 
             ArrayList<KeywordItem> keywords = new ArrayList<KeywordItem>();
             DynamicButtonManager dynamicButtonManager = new DynamicButtonManager(context, holder.root);
 
-            for (int i = 0; i < mean.length; i++)
-                keywords.add(new KeywordItem(mean[i], true));
+            for (int i = 0; i < meankeyword.length; i++)
+                keywords.add(new KeywordItem(meankeyword[i], true));
+
             dynamicButtonManager.setDynamicButton(keywords, holder.mMeanKeywordLocation, false);
             keywords.clear();
 
-            for (int i = 0; i < similar.length; i++)
-                keywords.add(new KeywordItem(similar[i], false));
-
+            for (int i = 0; i < similarkeyword.length; i++)
+                keywords.add(new KeywordItem(similarkeyword[i], false));
             dynamicButtonManager.setDynamicButton(keywords, holder.mSimilarKeywordLocation, false);
         }else{
             holder.mTvMean.setText("외 " + String.valueOf(item.getWordItems().size()-1)+"개의 결과");

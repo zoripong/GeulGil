@@ -30,8 +30,14 @@ public class ConnectApi{
             e.printStackTrace();
         }
 
-        Log.e("getRelativesResult","getRelativesResult종료");
+        Log.e("getRelativesResult","getRelativesResult 종료");
         return apiItem;
+    }
+
+
+    public SameSounds getSearchRecord(String request){
+        //// TODO: 2017-09-14 김두리가 지금부터 해야하는 곳
+        return null;
     }
 
     public void connectServer(final String request) {

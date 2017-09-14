@@ -19,9 +19,11 @@ import android.widget.Toast;
 import com.five.high.emirim.geulgil.Adapter.SearchRecyclerSetter;
 import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
+import com.five.high.emirim.geulgil.Control.SharedPreferencesManager;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
+import com.five.high.emirim.geulgil.Model.SearchRecordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ import java.util.HashSet;
 
 public class SearchActivity extends AppCompatActivity {
     private final String SEARCHING_WORDS = "searching word";
-    private final String RESULT_WORDS = "result word";
 
     EditText mEditText;
     private boolean isMean = true;
@@ -61,7 +62,6 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         mKeywordItemList = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
-        mResultWordSet = (HashSet<SameSounds>) intent.getSerializableExtra(RESULT_WORDS);
 
         mKeywordsLocation = (LinearLayout) findViewById(R.id.searched_words);
         mRootLayout = (LinearLayout) findViewById(R.id.root);
@@ -75,18 +75,19 @@ public class SearchActivity extends AppCompatActivity {
 
         isLongClicked = new boolean[mDynamicButtons.size()];
 
-        // TODO: 2017-09-14 전체 삭제 버튼
-//        mRemoveAll = (TextView)findViewById(R.id.all_delete);
-//        mRemoveAll.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager();
-//                sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), new ArrayList<SearchRecordItem>());
-//                searchRecyclerSetter.setRecyclerCardView(recyclerView);
-//            }
-//        });
-        //TODO : 검색 키워드 삭제시 결과도 변동 되야 함.. 하 .. 스트레스다.. ><
+//         TODO: 2017-09-14 전체 삭제 버튼
+        mRemoveAll = (TextView)findViewById(R.id.all_delete);
+        mRemoveAll.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager();
+                sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), new ArrayList<SearchRecordItem>());
+                searchRecyclerSetter.setRecyclerCardView(recyclerView);
+            }
+        });
 
+        //TODO : 검색 키워드 삭제시 결과도 변동 되야 함.. 하 .. 스트레스다.. ><
+        // mKeywordList가 검색단어들을 담고 있다!
         for(int i = 0; i< mDynamicButtons.size(); i++){
             final TextView keyword = mDynamicButtons.get(i);
             final int finalI = i;
@@ -110,6 +111,7 @@ public class SearchActivity extends AppCompatActivity {
                         isLongClicked[finalI] = false;
                         mKeywordsLocation.removeView(keyword);
                         mKeywordItemList.remove(finalI);
+                        M.mResult.remove(finalI);
                         if(mKeywordItemList.size() == 0)
                             mRemoveButton.setVisibility(View.INVISIBLE);
 
@@ -216,7 +218,6 @@ public class SearchActivity extends AppCompatActivity {
         if(mKeywordItemList.size() != 0) {
             Intent intent = new Intent(SearchActivity.this, ResultCardViewActivity.class);
             intent.putExtra(SEARCHING_WORDS, mKeywordItemList);
-            intent.putExtra(RESULT_WORDS, mResultWordSet);
             startActivity(intent);
             finish();
         }else{

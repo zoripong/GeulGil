@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Control.ConnectApi;
 import com.five.high.emirim.geulgil.Control.SharedPreferencesManager;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.SearchRecordItem;
 import com.five.high.emirim.geulgil.R;
 
@@ -37,10 +39,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     }
 
     @Override
-    public void onBindViewHolder(RecordViewHolder holder, int position) {
-
-        // TODO: 2017-09-14 검색기록과 detail 연결
-
+    public void onBindViewHolder(final RecordViewHolder holder, int position) {
         final SearchRecordItem item = items.get(position);
         final int finalPosition = position;
 
@@ -63,6 +62,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         holder.root.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                ConnectApi connectApi = new ConnectApi();
+                // TODO: 2017-09-14 검색기록과 detail 연결
+
+                SameSounds sameSounds = connectApi.getSearchRecord(String.valueOf(holder.tvWord.getText()));
 
             }
         });

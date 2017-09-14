@@ -21,11 +21,7 @@ import java.util.HashSet;
 // TODO: 2017-09-10 : 키워드 단어 결과 연결,,!
 
 public class ResultCardViewActivity extends AppCompatActivity {
-    private final String PREFS_TAG = "SharedPrefs";
-    private final String PRODUCT_TAG = "MyProduct";
-
     private final String SEARCHING_WORDS = "searching word";
-    private final String RESULT_WORDS = "result word";
 
     RecyclerView recyclerView;
     CardRecyclerSetter cardRecyclerSetter;
@@ -42,7 +38,6 @@ public class ResultCardViewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mKeywordItemSet = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
-        mResultWordSet = (HashSet<SameSounds>) intent.getSerializableExtra(RESULT_WORDS);
 
         ImageView searchButton = (ImageView) findViewById(R.id.iv_searchBtn);
 
@@ -59,7 +54,6 @@ public class ResultCardViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ResultCardViewActivity.this, SearchActivity.class);
                 intent.putExtra(SEARCHING_WORDS, mKeywordItemSet);
-                intent.putExtra(RESULT_WORDS, mResultWordSet);
                 startActivity(intent);
                 finish();
             }

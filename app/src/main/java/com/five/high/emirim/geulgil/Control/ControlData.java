@@ -48,6 +48,7 @@ public class ControlData {
         apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
 
         HashSet<SameSounds> newSet = new HashSet<SameSounds>();
+        M.mResult.add(newSet);
 
         Iterator<SameSounds> getIterator = apiItem.getRelatives().iterator();
 
