@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.five.high.emirim.geulgil.Adapter.RecyclerSetter;
+import com.five.high.emirim.geulgil.Adapter.CardRecyclerSetter;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
@@ -28,7 +28,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
     private final String RESULT_WORDS = "result word";
 
     RecyclerView recyclerView;
-    RecyclerSetter recyclerSetter;
+    CardRecyclerSetter cardRecyclerSetter;
 
     ArrayList<KeywordItem> mKeywordItemSet;
     HashSet<SameSounds> mResultWordSet;
@@ -51,8 +51,8 @@ public class ResultCardViewActivity extends AppCompatActivity {
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerSetter = new RecyclerSetter(this);
-        recyclerSetter.setRecyclerCardView(recyclerView, this, mResultWordSet);
+        cardRecyclerSetter = new CardRecyclerSetter(this);
+        cardRecyclerSetter.setRecyclerCardView(recyclerView, mResultWordSet);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

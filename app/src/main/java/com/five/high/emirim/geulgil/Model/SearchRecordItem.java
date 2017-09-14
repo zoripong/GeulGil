@@ -13,6 +13,7 @@ public class SearchRecordItem {
         this.mean = mean;
     }
 
+
     public String getWord() {
         return word;
     }

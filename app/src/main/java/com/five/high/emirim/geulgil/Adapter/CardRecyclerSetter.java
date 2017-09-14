@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 
 import java.util.ArrayList;
@@ -15,31 +14,25 @@ import java.util.Iterator;
  * Created by 유리 on 2017-06-19.
  */
 
-public class RecyclerSetter {
+public class CardRecyclerSetter {
     ArrayList<SameSounds> items;
-    RecyclerAdapter adapter;
-//    WordItem[] item;
-    String mWord[]; // 즐겨찾는 단어
-    private final int STAR_SIZE = 3; // 즐찾 단어 개수
+    CardRecyclerAdapter adapter;
 
     Context context;
-    ControlData controlData;
 
-    public RecyclerSetter(Context context){
+    public CardRecyclerSetter(Context context){
         this.context = context;
-        controlData = new ControlData(context);
     }
 
     //리사이클러 카드뷰 세팅
-    public boolean setRecyclerCardView(RecyclerView recyclerView, Context context, HashSet<SameSounds> hashSet){
+    public boolean setRecyclerCardView(RecyclerView recyclerView, HashSet<SameSounds> hashSet){
 
-        // TODO : 수정
         items = new ArrayList<SameSounds>();
-        mWord = new String[hashSet.size()];
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
+
 
         Iterator<SameSounds> iterator = hashSet.iterator();
 
@@ -47,10 +40,11 @@ public class RecyclerSetter {
             items.add(iterator.next());
         }
 
-        adapter = new RecyclerAdapter(context, items);
+        adapter = new CardRecyclerAdapter(context, items);
         recyclerView.setAdapter(adapter);
         return true;
 
     }
+
 }
 

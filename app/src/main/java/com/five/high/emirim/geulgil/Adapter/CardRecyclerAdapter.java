@@ -27,24 +27,24 @@ import com.five.high.emirim.geulgil.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.CardViewHolder> {
     private final String SELECT_WORD = "selectedWord";
     Context context;
     List<SameSounds> items;
 
-    public RecyclerAdapter(Context context, List<SameSounds> items) {
+    public CardRecyclerAdapter(Context context, List<SameSounds> items) {
         this.context = context;
         this.items = items;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cardview, parent, false);
-        return new ViewHolder(v);
+        return new CardViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(CardViewHolder holder, final int position) {
         final SameSounds item = items.get(position);
 
         holder.mTvWord.setText(item.getId());
@@ -90,7 +90,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.mXbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SameSounds itemLabel = items.get(position);
                 items.remove(position);
                 if(items.size()==0){
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
@@ -110,7 +109,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return this.items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class CardViewHolder extends RecyclerView.ViewHolder {
         LinearLayout root;
         CardView cardview;
         TextView mTvWord;
@@ -119,7 +118,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         LinearLayout mSimilarKeywordLocation;
         ImageView mXbutton;
 
-        public ViewHolder(View itemView) {
+        public CardViewHolder(View itemView) {
             super(itemView);
             root = (LinearLayout)itemView.findViewById(R.id.root);
             mTvWord = (TextView) itemView.findViewById(R.id.tv_word);
