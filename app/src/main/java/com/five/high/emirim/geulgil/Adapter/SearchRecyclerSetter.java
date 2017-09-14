@@ -4,11 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.SearchRecordItem;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by 유리 on 2017-09-14.
@@ -24,14 +22,13 @@ public class SearchRecyclerSetter {
         this.context = context;
     }
 
-    public boolean setRecyclerCardView(RecyclerView recyclerView, HashSet<SameSounds> hashSet){
+    public boolean setRecyclerCardView(RecyclerView recyclerView){
 
         items = new ArrayList<SearchRecordItem>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-
 
 
         adapter = new SearchRecyclerAdapter(context);

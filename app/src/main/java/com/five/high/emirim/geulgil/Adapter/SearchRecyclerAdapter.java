@@ -38,6 +38,9 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
     @Override
     public void onBindViewHolder(RecordViewHolder holder, int position) {
+
+        // TODO: 2017-09-14 검색기록과 detail 연결
+
         final SearchRecordItem item = items.get(position);
         final int finalPosition = position;
 
@@ -56,6 +59,14 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 notifyItemRangeChanged(finalPosition, items.size());
             }
         });
+
+        holder.root.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     @Override

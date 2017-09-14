@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Adapter.SearchRecyclerSetter;
 import com.five.high.emirim.geulgil.Control.ControlData;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.M;
@@ -41,11 +43,16 @@ public class SearchActivity extends AppCompatActivity {
 
     LinearLayout mKeywordsLocation;
     LinearLayout mRootLayout;
+    TextView mRemoveAll;
 
     private boolean[] isLongClicked;
     ArrayList<TextView> mDynamicButtons;
 
     ImageView mRemoveButton;
+
+    SearchRecyclerSetter searchRecyclerSetter;
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +69,22 @@ public class SearchActivity extends AppCompatActivity {
         dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRootLayout);
         mDynamicButtons = dynamicButtonManager.setDynamicButton(mKeywordItemList,mKeywordsLocation , true);
 
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
+        searchRecyclerSetter = new SearchRecyclerSetter(this);
+        searchRecyclerSetter.setRecyclerCardView(recyclerView);
 
         isLongClicked = new boolean[mDynamicButtons.size()];
 
+        // TODO: 2017-09-14 전체 삭제 버튼
+//        mRemoveAll = (TextView)findViewById(R.id.all_delete);
+//        mRemoveAll.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager();
+//                sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), new ArrayList<SearchRecordItem>());
+//                searchRecyclerSetter.setRecyclerCardView(recyclerView);
+//            }
+//        });
         //TODO : 검색 키워드 삭제시 결과도 변동 되야 함.. 하 .. 스트레스다.. ><
 
         for(int i = 0; i< mDynamicButtons.size(); i++){
