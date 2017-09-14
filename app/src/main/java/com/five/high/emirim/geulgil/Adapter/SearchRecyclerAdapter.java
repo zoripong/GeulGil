@@ -65,7 +65,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 ConnectApi connectApi = new ConnectApi();
                 // TODO: 2017-09-14 검색기록과 detail 연결
 
-                SameSounds sameSounds = connectApi.getSearchRecord(String.valueOf(holder.tvWord.getText()));
+                SameSounds sameSounds = connectApi.getDetailRecord(String.valueOf(holder.tvWord.getText()));
 
             }
         });

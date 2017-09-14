@@ -114,7 +114,6 @@ public class SearchActivity extends AppCompatActivity {
                         M.mResult.remove(finalI);
                         if(mKeywordItemList.size() == 0)
                             mRemoveButton.setVisibility(View.INVISIBLE);
-
                     }
                     changeOrigin();
                 }
@@ -128,7 +127,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
         // include action
         View searchBar = findViewById(R.id.search_box);
         ImageView searchButton = (ImageView)searchBar.findViewById(R.id.iv_searchBtn);
@@ -138,23 +136,24 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String word = mEditText.getText().toString();
-                if(!word.equals("")) {
-                    KeywordItem keywordItem = new KeywordItem(word, isMean);
+            String word = mEditText.getText().toString();
+            if(!word.equals("")) {
+                KeywordItem keywordItem = new KeywordItem(word, isMean);
 
-                    //.. get data
-                    ControlData control = new ControlData();
-                    mResultWordSet = control.searchingWord(mResultWordSet, keywordItem);
+                //.. get data
+                ControlData control = new ControlData();
+                mResultWordSet = control.searchingWord(keywordItem);
+                M.mResult.add(mResultWordSet);
 
-                    if(M.isNull == true){
-                        Toast.makeText(SearchActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        mKeywordItemList.add(keywordItem);
-                        changeActivity();
-                    }
+                if(mResultWordSet == null){
+                    Toast.makeText(SearchActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(SearchActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    mKeywordItemList.add(keywordItem);
+                    changeActivity();
                 }
+            }else{
+                Toast.makeText(SearchActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
+            }
             }
         });
 
@@ -183,6 +182,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 TextView textView = (TextView)dialog.findViewById(R.id.dialog_text);
                 textView.setText("검색 키워드를 모두 삭제하시겠습니까?");
+                M.mResult.clear();
 
                 Button mYesButton =(Button)dialog.findViewById(R.id.dialog_button_yes);
                 Button mNoButton =(Button)dialog.findViewById(R.id.dialog_button_no);

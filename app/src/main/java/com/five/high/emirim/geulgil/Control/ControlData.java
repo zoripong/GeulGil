@@ -3,7 +3,6 @@ package com.five.high.emirim.geulgil.Control;
 import android.content.Context;
 import android.util.Log;
 
-import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.ApiItem;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
@@ -30,7 +29,7 @@ public class ControlData {
 
     // Word Item -> api에서 SameSounds -> Word Item 으로 return
     // string에 해당하는
-    public HashSet<SameSounds> searchingWord(HashSet<SameSounds> hashSet, KeywordItem word) {
+    public HashSet<SameSounds> searchingWord(KeywordItem word) {
         // hashSet = 검색 결과 누적 집합
         // word = 요청 검색어
         // apiItem = 새로운 검색 결과
@@ -43,30 +42,13 @@ public class ControlData {
 
         if(apiItem == null) {
             Log.e("connect 실패", "apiItem == null");
-            apiItem = connectApi.getRelativesResult(request);
-        }
-        apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
+            return null;
+        }else {
 
-        HashSet<SameSounds> newSet = new HashSet<SameSounds>();
-        M.mResult.add(newSet);
-
-        Iterator<SameSounds> getIterator = apiItem.getRelatives().iterator();
-
-        while(getIterator.hasNext()){
-            SameSounds now = getIterator.next();
-            if(hashSet.contains(now) || hashSet.size() == 0){
-                Log.e("같니?", now.toString());
-                newSet.add(now);
-            }
+            apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
         }
 
-        if (newSet.size() == 0) {
-            M.isNull = true;
-            return hashSet;
-        } else {
-            M.isNull = false;
-            return newSet;
-        }
+        return apiItem.getRelatives();
     }
 
     private ApiItem seperateSet(ApiItem apiItem) {

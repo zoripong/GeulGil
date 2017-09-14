@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.five.high.emirim.geulgil.Control.ControlData;
-import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
@@ -49,11 +48,10 @@ public class MainActivity extends AppCompatActivity{
                     KeywordItem keywordItem = new KeywordItem(word, isMean);
 
                     //.. get data
-                    HashSet<SameSounds> resultWordSet = new HashSet<SameSounds>();
                     ControlData control = new ControlData();
-                    resultWordSet = control.searchingWord(resultWordSet, keywordItem);
+                    HashSet<SameSounds> result = control.searchingWord(keywordItem);
 
-                    if(M.isNull == true){
+                    if(result == null){
                         Toast.makeText(MainActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
                     }else{
                         ArrayList<KeywordItem> keywordItems = new ArrayList<KeywordItem>();
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity{
 
                         Intent intent = new Intent(MainActivity.this, ResultCardViewActivity.class);
                         intent.putExtra(SEARCHING_WORDS, keywordItems);
-                        intent.putExtra(RESULT_WORDS, resultWordSet);
                         startActivity(intent);
                         finish();
 

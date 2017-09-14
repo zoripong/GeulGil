@@ -23,7 +23,7 @@ public class ConnectApi{
 
     public ApiItem getRelativesResult(String request) {
 
-        connectServer(request);
+        getSearchRecord(request);
         try {
             Thread.sleep(1700);
         } catch (InterruptedException e) {
@@ -35,12 +35,12 @@ public class ConnectApi{
     }
 
 
-    public SameSounds getSearchRecord(String request){
+    public SameSounds getDetailRecord(String request){
         //// TODO: 2017-09-14 김두리가 지금부터 해야하는 곳
         return null;
     }
 
-    public void connectServer(final String request) {
+    private void getSearchRecord(final String request) {
 
         new AsyncTask<Void, Void, String>() {
 
