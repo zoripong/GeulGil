@@ -56,20 +56,20 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
             if(mean.length() >= 30) mean = mean.substring(0, 30)+"...";
             holder.mTvMean.setText(mean);
 
-            String[] meankeyword = wordItem.get(0).getMeankeyword();
-            String[] similarkeyword = wordItem.get(0).getSimilarkeyword();
+            ArrayList<String> meankeyword = wordItem.get(0).getMeankeyword();
+            ArrayList<String> similarkeyword = wordItem.get(0).getSimilarkeyword();
 
             ArrayList<KeywordItem> keywords = new ArrayList<KeywordItem>();
             DynamicButtonManager dynamicButtonManager = new DynamicButtonManager(context, holder.root);
 
-            for (int i = 0; i < meankeyword.length; i++)
-                keywords.add(new KeywordItem(meankeyword[i], true));
+            for (int i = 0; i < meankeyword.size(); i++)
+                keywords.add(new KeywordItem(meankeyword.get(i), true));
 
             dynamicButtonManager.setDynamicButton(keywords, holder.mMeanKeywordLocation, false);
             keywords.clear();
 
-            for (int i = 0; i < similarkeyword.length; i++)
-                keywords.add(new KeywordItem(similarkeyword[i], false));
+            for (int i = 0; i < similarkeyword.size(); i++)
+                keywords.add(new KeywordItem(similarkeyword.get(i), false));
             dynamicButtonManager.setDynamicButton(keywords, holder.mSimilarKeywordLocation, false);
         }else{
             holder.mTvMean.setText("외 " + String.valueOf(item.getWordItems().size()-1)+"개의 결과");

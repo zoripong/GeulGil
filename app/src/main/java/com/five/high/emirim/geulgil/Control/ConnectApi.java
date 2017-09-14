@@ -77,8 +77,8 @@ public class ConnectApi{
                             String word = samesounds.getWordItems().get(i).getWord();
                             String mean = samesounds.getWordItems().get(i).getMean();
                             String part = samesounds.getWordItems().get(i).getPart();
-                            String[] meankeyword = samesounds.getWordItems().get(i).getMeankeyword();
-                            String[] similarkeyword = samesounds.getWordItems().get(i).getSimilarkeyword();
+                            ArrayList<String> meankeyword = samesounds.getWordItems().get(i).getMeankeyword();
+                            ArrayList<String> similarkeyword = samesounds.getWordItems().get(i).getSimilarkeyword();
                             int recommend = samesounds.getWordItems().get(i).getRecommend();
 
                             wordItems.add(new WordItem(id, word, mean, part, meankeyword, similarkeyword, recommend));

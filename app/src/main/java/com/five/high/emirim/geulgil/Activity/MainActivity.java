@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.five.high.emirim.geulgil.Control.ControlData;
+import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
@@ -23,7 +25,6 @@ import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity{
     private final String SEARCHING_WORDS = "searching word";
-    private final String RESULT_WORDS = "result word";
 
     EditText mEditText;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity{
                     //.. get data
                     ControlData control = new ControlData();
                     HashSet<SameSounds> result = control.searchingWord(keywordItem);
+                    Log.e("중간점검", M.mResult.size()+".");
 
                     if(result == null){
                         Toast.makeText(MainActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();

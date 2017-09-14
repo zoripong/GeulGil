@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -143,9 +144,9 @@ public class SearchActivity extends AppCompatActivity {
                 //.. get data
                 ControlData control = new ControlData();
                 mResultWordSet = control.searchingWord(keywordItem);
-                M.mResult.add(mResultWordSet);
 
                 if(mResultWordSet == null){
+                    Log.e("Null", mResultWordSet+"은 null");
                     Toast.makeText(SearchActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
                 }else{
                     mKeywordItemList.add(keywordItem);

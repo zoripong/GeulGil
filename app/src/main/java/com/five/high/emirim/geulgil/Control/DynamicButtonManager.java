@@ -125,11 +125,11 @@ public class DynamicButtonManager {
     }
 
 
-    public void setArrayKeyword(String [] keywords, LinearLayout location, boolean isMean){
+    public void setArrayKeyword(ArrayList<String> keywords, LinearLayout location, boolean isMean){
 
         ArrayList<KeywordItem> keywordItems = new ArrayList<KeywordItem>();
-        for(int i = 0; i<keywords.length; i++){
-            keywordItems.add(new KeywordItem(keywords[i], isMean));
+        for(int i = 0; i<keywords.size(); i++){
+            keywordItems.add(new KeywordItem(keywords.get(i), isMean));
         }
         setDynamicButton(keywordItems, location);
 

@@ -1,7 +1,7 @@
 package com.five.high.emirim.geulgil.Model;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Created by 유리 on 2017-06-16.
@@ -12,8 +12,8 @@ public class WordItem implements Serializable{
     private String word;
     private String mean;
     private String part;
-    private String [] meankeyword;
-    private String [] similarkeyword;
+    private ArrayList<String> meankeyword;
+    private ArrayList<String> similarkeyword;
     private int recommend;
 
     public int getId() {
@@ -32,11 +32,11 @@ public class WordItem implements Serializable{
         return part;
     }
 
-    public String[] getMeankeyword() {
+    public ArrayList<String> getMeankeyword() {
         return meankeyword;
     }
 
-    public String[] getSimilarkeyword() {
+    public ArrayList<String> getSimilarkeyword() {
         return similarkeyword;
     }
 
@@ -44,7 +44,7 @@ public class WordItem implements Serializable{
         return recommend;
     }
 
-    public WordItem(int id, String word, String mean, String part, String [] meankeyword, String [] similarkeyword, int recommend) {
+    public WordItem(int id, String word, String mean, String part, ArrayList<String> meankeyword, ArrayList<String> similarkeyword, int recommend) {
         this.id = id;
         this.word = word;
         this.mean = mean;
@@ -61,10 +61,9 @@ public class WordItem implements Serializable{
                 ", word='" + word + '\'' +
                 ", mean='" + mean + '\'' +
                 ", part='" + part + '\'' +
-                ", meankeyword=" + Arrays.toString(meankeyword) +
-                ", similarkeyword=" + Arrays.toString(similarkeyword) +
+                ", meankeyword=" + meankeyword +
+                ", similarkeyword=" + similarkeyword +
                 ", recommend=" + recommend +
                 '}';
     }
-
 }

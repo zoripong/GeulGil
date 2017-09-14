@@ -3,6 +3,7 @@ package com.five.high.emirim.geulgil.Control;
 import android.content.Context;
 import android.util.Log;
 
+import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.ApiItem;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
@@ -42,10 +43,12 @@ public class ControlData {
 
         if(apiItem == null) {
             Log.e("connect 실패", "apiItem == null");
+            M.isNull = true;
             return null;
         }else {
-
+            M.isNull = false;
             apiItem = seperateSet(apiItem); // 동음이의어와 단일어 구분
+            M.mResult.add(apiItem.getRelatives());
         }
 
         return apiItem.getRelatives();

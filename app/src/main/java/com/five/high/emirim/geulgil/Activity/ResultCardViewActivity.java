@@ -11,18 +11,20 @@ import android.widget.LinearLayout;
 
 import com.five.high.emirim.geulgil.Adapter.CardRecyclerSetter;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
-import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
+import com.five.high.emirim.geulgil.Model.WordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import static com.five.high.emirim.geulgil.M.mResult;
+
 
 // TODO: 2017-09-10 : 키워드 단어 결과 연결,,!
-
+// TODO: 2017-09-14 : 결과 내 재검색과 검색 키워드 연결 매칭
 public class ResultCardViewActivity extends AppCompatActivity {
     private final String SEARCHING_WORDS = "searching word";
 
@@ -68,8 +70,8 @@ public class ResultCardViewActivity extends AppCompatActivity {
 
     }
     private HashSet<SameSounds> convertListToSet(){
-        ArrayList<HashSet<SameSounds>> list = M.mResult;
-        Log.e("Set size", M.mResult.size()+"?");
+        ArrayList<HashSet<SameSounds>> list = mResult;
+        Log.e("Set size", mResult.size()+"?");
         HashSet<SameSounds> show = new HashSet<SameSounds>();
 
         for(int i = 0; i<list.size(); i++){
@@ -84,17 +86,29 @@ public class ResultCardViewActivity extends AppCompatActivity {
     }
 
     private HashSet<SameSounds> crossSet(){
-        HashSet<SameSounds> showSet = M.mResult.get(0);
+//        HashSet<SameSounds>  = new HashSet<SameSounds>();
 
-        for(int i = 1; i<M.mResult.size(); i++){
-            Iterator<SameSounds> tempSet = M.mResult.get(i).iterator();
-            while(tempSet.hasNext()){
-                SameSounds now = tempSet.next();
-                if(!showSet.contains(now))
-                    showSet.remove(now);
+        Iterator<SameSounds> iterator = convertListToSet().iterator();
+
+        HashSet<SameSounds> newSet = new HashSet<>();
+
+        for(int i = 0; i<mKeywordItemList.size(); i++) {
+            while (iterator.hasNext()) {
+                SameSounds sameSounds = iterator.next();
+                ArrayList<WordItem> wordItems = sameSounds.getWordItems();
+                for(int j = 0; j<wordItems.size(); j++){
+                    if(mKeywordItemList.get(i).isMean() && wordItems.get(j).getMeankeyword().contains(mKeywordItemList.get(i).getWord())) {
+                        newSet.add(sameSounds);
+                        break;
+                    }else if((mKeywordItemList.get(i).isMean() == false) && wordItems.get(j).getSimilarkeyword().contains(mKeywordItemList.get(i).getWord())) {
+                        newSet.add(sameSounds);
+                        break;
+                    }
+                }
+
             }
         }
 
-        return showSet;
+        return newSet;
     }
 }
