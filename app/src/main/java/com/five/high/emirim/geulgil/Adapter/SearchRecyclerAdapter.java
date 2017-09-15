@@ -1,6 +1,7 @@
 package com.five.high.emirim.geulgil.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Activity.DetailViewActivity;
 import com.five.high.emirim.geulgil.Control.ConnectApi;
 import com.five.high.emirim.geulgil.Control.SharedPreferencesManager;
 import com.five.high.emirim.geulgil.Model.SameSounds;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
  */
 
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.RecordViewHolder> {
+    private final String SELECT_WORD = "selectedWord";
+
     Context context;
     ArrayList<SearchRecordItem> items;
     SharedPreferencesManager sharedPreferencesManager;
@@ -62,11 +66,20 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         holder.root.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                ConnectApi connectApi = new ConnectApi();
+                ConnectApi connectApi = new ConnectApi(context);
                 // TODO: 2017-09-14 검색기록과 detail 연결
 
                 SameSounds sameSounds = connectApi.getDetailRecord(String.valueOf(holder.tvWord.getText()));
-
+//                ArrayList<WordItem> list = new ArrayList<WordItem>();
+//                ArrayList<String> li = new ArrayList<String>();
+//                li.add("라면");
+//                li.add("먹고");
+//                li.add("싶다");
+//                list.add(new WordItem(1, "사랑", "사랑한다", "명사",li,li,0 ));
+//                SameSounds sameSounds = new SameSounds("사랑",list);
+                Intent intent = new Intent(context, DetailViewActivity.class);
+                intent.putExtra(SELECT_WORD, sameSounds);
+                context.startActivity(intent);
             }
         });
 

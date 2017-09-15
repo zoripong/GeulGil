@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
                     KeywordItem keywordItem = new KeywordItem(word, isMean);
 
                     //.. get data
-                    ControlData control = new ControlData();
+                    ControlData control = new ControlData(getApplicationContext());
                     HashSet<SameSounds> result = control.searchingWord(keywordItem);
                     Log.e("중간점검", M.mResult.size()+".");
 

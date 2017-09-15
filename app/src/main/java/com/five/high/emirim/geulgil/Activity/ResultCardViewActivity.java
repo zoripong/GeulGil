@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Adapter.CardRecyclerSetter;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
+import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.WordItem;
@@ -19,8 +21,6 @@ import com.five.high.emirim.geulgil.R;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-
-import static com.five.high.emirim.geulgil.M.mResult;
 
 
 // TODO: 2017-09-10 : 키워드 단어 결과 연결,,!
@@ -35,6 +35,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
     HashSet<SameSounds> mShowItemSet;
 
     DynamicButtonManager dynamicButtonManager;
+    TextView countText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
         mKeywordItemList = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
 
         ImageView searchButton = (ImageView) findViewById(R.id.iv_searchBtn);
+        countText = (TextView) findViewById(R.id.count);
 
         dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), (LinearLayout) findViewById(R.id.root));
         dynamicButtonManager.setDynamicButton(mKeywordItemList, (LinearLayout) findViewById(R.id.searched_words), false);
@@ -70,8 +72,10 @@ public class ResultCardViewActivity extends AppCompatActivity {
 
     }
     private HashSet<SameSounds> convertListToSet(){
-        ArrayList<HashSet<SameSounds>> list = mResult;
-        Log.e("Set size", mResult.size()+"?");
+        ArrayList<HashSet<SameSounds>> list = M.mResult;
+
+        Log.e("NULL", M.mResult+"?");
+
         HashSet<SameSounds> show = new HashSet<SameSounds>();
 
         for(int i = 0; i<list.size(); i++){
@@ -81,6 +85,8 @@ public class ResultCardViewActivity extends AppCompatActivity {
         }
 
         Log.e("Set Size", show.size()+"!");
+
+        countText.setText(show.size()+" 개");
 
         return show;
     }

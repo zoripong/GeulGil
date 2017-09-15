@@ -19,13 +19,10 @@ public class ControlData {
     Context mContext;
     ConnectApi connectApi;
 
-    public ControlData (){
-        connectApi = new ConnectApi();
-    }
 
     public ControlData(Context context) {
-        this();
         this.mContext = context;
+        connectApi = new ConnectApi(context);
     }
 
     // Word Item -> api에서 SameSounds -> Word Item 으로 return

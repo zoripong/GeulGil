@@ -1,5 +1,6 @@
 package com.five.high.emirim.geulgil.Control;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -28,10 +29,16 @@ public class DynamicButtonManager {
     private int SEARCHING_WORD_ID = 0x8000;
     Context mContext;
     LinearLayout mRootLayout;
+    Activity nowActivity;
 
     public DynamicButtonManager(Context context, LinearLayout root) {
         mContext = context;
         mRootLayout = root;
+    }
+
+    public DynamicButtonManager(Context context, LinearLayout root, Activity nowActivity){
+        this(context, root);
+        this.nowActivity = nowActivity;
     }
 
     private TextView setDynamicButton(final KeywordItem word, final LinearLayout location, boolean clickable){
@@ -46,20 +53,30 @@ public class DynamicButtonManager {
 
         location.addView(searchingWord);
 
-        return searchingWord;
-    }
-
-    private void setDynamicButton(final ArrayList<KeywordItem> word, final LinearLayout location){
-        for(int i = 0; i<word.size(); i++) {
-            setDynamicButton(word.get(i), location, false).setOnClickListener(new View.OnClickListener() {
+        if(clickable){
+            searchingWord.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    // TODO: 2017-09-14 ConnectApi
+                    ConnectApi connectApi = new ConnectApi(mContext);
+                    SameSounds item = connectApi.getDetailRecord(word.getWord());
+
+                    TextView tvWord = (TextView)nowActivity.findViewById(R.id.tv_word);
+                    TextView tvPosition = (TextView)nowActivity.findViewById(R.id.tv_position);
+                    LinearLayout meanKeywordsLocation = (LinearLayout)nowActivity.findViewById(R.id.keywords_location_mean);
+                    LinearLayout similarKeywordsLocation = (LinearLayout) nowActivity.findViewById(R.id.keywords_location_similar);
+                    LinearLayout meanLocation = (LinearLayout) nowActivity.findViewById(R.id.mean_location);
+
+                    tvWord.setText(item.getId());
+                    tvPosition.setText("[" + item.getWordItems().get(0).getPart() + "]");
+                    convertStringToModel(item.getWordItems().get(0).getMeankeyword(), meanKeywordsLocation, true);
+                    convertStringToModel(item.getWordItems().get(0).getSimilarkeyword(), similarKeywordsLocation, false);
+                    setMeanText(item, meanLocation, meanKeywordsLocation, similarKeywordsLocation);
+
                 }
             });
         }
+        return searchingWord;
     }
-
 
     public ArrayList<TextView> setDynamicButton(ArrayList<KeywordItem> words, LinearLayout location, boolean clickable){
         location.removeAllViews();
@@ -68,6 +85,15 @@ public class DynamicButtonManager {
             list.add(setDynamicButton(words.get(i), location, clickable));
         }
         return list;
+    }
+
+    public void convertStringToModel(ArrayList<String> keywords, LinearLayout location, boolean isMean){
+
+        ArrayList<KeywordItem> keywordItems = new ArrayList<KeywordItem>();
+        for(int i = 0; i<keywords.size(); i++){
+            keywordItems.add(new KeywordItem(keywords.get(i), isMean));
+        }
+        setDynamicButton(keywordItems, location, true);
     }
 
     private void customizingBackground(TextView word, boolean isMean){
@@ -109,8 +135,8 @@ public class DynamicButtonManager {
         meanText.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    setArrayKeyword(word.getMeankeyword(), mMeanLocation, true);
-                    setArrayKeyword(word.getSimilarkeyword(), mSimilarLocation, false);
+                    convertStringToModel(word.getMeankeyword(), mMeanLocation, true);
+                    convertStringToModel(word.getSimilarkeyword(), mSimilarLocation, false);
                 }
             });
     }
@@ -119,19 +145,10 @@ public class DynamicButtonManager {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, convertDpToPixel(5), 0, convertDpToPixel(5)); // left top right bottom
         mean.setLayoutParams(params);
-        mean.setGravity(Gravity.CENTER);
         mean.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         mean.setTextColor(Color.BLACK);
     }
 
 
-    public void setArrayKeyword(ArrayList<String> keywords, LinearLayout location, boolean isMean){
 
-        ArrayList<KeywordItem> keywordItems = new ArrayList<KeywordItem>();
-        for(int i = 0; i<keywords.size(); i++){
-            keywordItems.add(new KeywordItem(keywords.get(i), isMean));
-        }
-        setDynamicButton(keywordItems, location);
-
-    }
 }

@@ -76,7 +76,7 @@ public class SearchActivity extends AppCompatActivity {
 
         isLongClicked = new boolean[mDynamicButtons.size()];
 
-//         TODO: 2017-09-14 전체 삭제 버튼
+        //전체 삭제 버튼 리스너
         mRemoveAll = (TextView)findViewById(R.id.all_delete);
         mRemoveAll.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -142,7 +142,7 @@ public class SearchActivity extends AppCompatActivity {
                 KeywordItem keywordItem = new KeywordItem(word, isMean);
 
                 //.. get data
-                ControlData control = new ControlData();
+                ControlData control = new ControlData(getApplicationContext());
                 mResultWordSet = control.searchingWord(keywordItem);
 
                 if(mResultWordSet == null){

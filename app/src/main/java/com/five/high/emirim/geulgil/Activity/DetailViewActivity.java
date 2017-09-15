@@ -31,7 +31,6 @@ public class DetailViewActivity extends AppCompatActivity {
     TextView mPart;
     SameSounds mItem;
 
-    //// TODO: 2017-09-14 결과 확실하게 보이게..
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +42,8 @@ public class DetailViewActivity extends AppCompatActivity {
         Log.e("안녕", mItem.getWordItems().get(0).toString());
 
         mPart.setText("[" + mItem.getWordItems().get(0).getPart() + "]");
-        dynamicButtonManager.setArrayKeyword(mItem.getWordItems().get(0).getMeankeyword(), mMeanKeywordsLocation, true);
-        dynamicButtonManager.setArrayKeyword(mItem.getWordItems().get(0).getSimilarkeyword(), mSimilarKeywordsLocation, false);
+        dynamicButtonManager.convertStringToModel(mItem.getWordItems().get(0).getMeankeyword(), mMeanKeywordsLocation, true);
+        dynamicButtonManager.convertStringToModel(mItem.getWordItems().get(0).getSimilarkeyword(), mSimilarKeywordsLocation, false);
 
         dynamicButtonManager.setMeanText(mItem, mMeanLocation, mMeanKeywordsLocation, mSimilarKeywordsLocation);
         // 검색 기록 저장
@@ -69,7 +68,7 @@ public class DetailViewActivity extends AppCompatActivity {
         mWord = (TextView)findViewById(R.id.tv_word);
         mMeanLocation = (LinearLayout)findViewById(R.id.mean_location);
         mPart = (TextView)findViewById(R.id.tv_position);
-        dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRoot);
+        dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRoot, this);
         sharedPreferencesManager = new SharedPreferencesManager();
     }
 
