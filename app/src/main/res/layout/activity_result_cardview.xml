@@ -71,7 +71,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp"
                     android:textSize="13sp"
-                    android:text="조회수 : "/>
+                    android:text="카드수 : "/>
                 <TextView
                     android:id="@+id/count"
                     android:layout_width="wrap_content"

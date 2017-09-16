@@ -60,11 +60,11 @@ public class ResultCardViewActivity extends AppCompatActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if(isChecked) {
                     cardRecyclerSetter.setRecyclerCardView(recyclerView, crossSet());
-                else
+                }else {
                     cardRecyclerSetter.setRecyclerCardView(recyclerView, convertListToSet());
-
+                }
             }
         });
         searchLocation.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +120,8 @@ public class ResultCardViewActivity extends AppCompatActivity {
             }
             newSet = tempSet;
         }
+
+        countText.setText(newSet.size()+" 개");
 
         return newSet;
     }
