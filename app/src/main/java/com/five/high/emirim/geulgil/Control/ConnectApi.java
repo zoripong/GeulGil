@@ -152,7 +152,6 @@ public class ConnectApi{
 
             @Override
             public void onFailure(Call<SameSounds> call, Throwable t) {
-
                 progressDialogManager.dismissDialog(progressDialog);
                 dialogManager.showDialog("서버와의 연결에 실패하였습니다.", 1);
             }

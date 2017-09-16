@@ -45,7 +45,9 @@ public class SearchActivity extends AppCompatActivity {
 
     SearchRecyclerSetter searchRecyclerSetter;
     RecyclerView recyclerView;
+    TextView mNotFound;
 
+    SharedPreferencesManager sharedPreferencesManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,18 +64,61 @@ public class SearchActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         searchRecyclerSetter = new SearchRecyclerSetter(SearchActivity.this, SearchActivity.this);
+
         searchRecyclerSetter.setRecyclerCardView(recyclerView);
 
+        mNotFound = (TextView)findViewById(R.id.not_found);
+
         isLongClicked = new boolean[mDynamicButtons.size()];
+
+        sharedPreferencesManager = new SharedPreferencesManager();
+        if(sharedPreferencesManager.loadSharedPreferencesLogList(SearchActivity.this).size() == 0) {
+            mNotFound.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }else{
+            mNotFound.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+
 
         //전체 삭제 버튼 리스너
         mRemoveAll = (TextView)findViewById(R.id.all_delete);
         mRemoveAll.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager();
-                sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), new ArrayList<SearchRecordItem>());
-                searchRecyclerSetter.setRecyclerCardView(recyclerView);
+                if(sharedPreferencesManager.loadSharedPreferencesLogList(SearchActivity.this).size()>0) {
+                    final Dialog dialog = new Dialog(SearchActivity.this, R.style.MyDialog);
+                    dialog.setContentView(R.layout.dialog_style2);
+                    dialog.show();
+
+                    TextView textView = (TextView) dialog.findViewById(R.id.dialog_text);
+                    textView.setText("검색 기록을 모두 삭제하시겠습니까?");
+
+                    Button mYesButton = (Button) dialog.findViewById(R.id.dialog_button_yes);
+                    Button mNoButton = (Button) dialog.findViewById(R.id.dialog_button_no);
+
+                    mYesButton.setEnabled(true);
+                    mNoButton.setEnabled(true);
+
+                    mYesButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), new ArrayList<SearchRecordItem>());
+                            searchRecyclerSetter.setRecyclerCardView(recyclerView);
+
+                            mNotFound.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.INVISIBLE);
+
+                            dialog.dismiss();
+
+                        }
+                    });
+                    mNoButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
             }
         });
 
@@ -122,6 +167,9 @@ public class SearchActivity extends AppCompatActivity {
         mEditText = (EditText)searchBar.findViewById(R.id.et_searchBox);
         Spinner spinner = (Spinner)searchBar.findViewById(R.id.spinner);
 
+        mEditText.setHint("지금 생각나는 그거 .. 그거 있잖아요!");
+//        mEditText.setTextColor();
+
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -139,6 +187,8 @@ public class SearchActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#787878"));
+
                 if(position == 0){
                     isMean = true;
                 }else if(position == 1){
@@ -154,7 +204,7 @@ public class SearchActivity extends AppCompatActivity {
         mRemoveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                // TODO: 2017-09-16 중복코드..
                 final Dialog dialog = new Dialog(SearchActivity.this, R.style.MyDialog);
                 dialog.setContentView(R.layout.dialog_style2);
                 dialog.show();
@@ -221,6 +271,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
     }
+
 }
 
 

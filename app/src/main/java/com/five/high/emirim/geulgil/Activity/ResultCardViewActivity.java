@@ -37,6 +37,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_cardview);
 
+
         LinearLayout searchLocation = (LinearLayout)findViewById(R.id.search_location);
         CheckBox checkBox = (CheckBox)findViewById(R.id.checkBox);
 

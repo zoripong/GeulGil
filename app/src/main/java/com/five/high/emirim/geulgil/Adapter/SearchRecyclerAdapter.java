@@ -55,6 +55,8 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 items.remove(finalPosition);
                 sharedPreferencesManager.saveSharedPreferencesLogList(context, items);
                 if(items.size()==0){
+                    nowActivity.findViewById(R.id.not_found).setVisibility(View.VISIBLE);
+                    nowActivity.findViewById(R.id.recyclerview).setVisibility(View.INVISIBLE);
                     Toast.makeText(context, "검색기록을 모두 삭제하셨습니다.", Toast.LENGTH_SHORT).show();
                 }
                 notifyItemRemoved(finalPosition);

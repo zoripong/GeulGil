@@ -1,8 +1,11 @@
 package com.five.high.emirim.geulgil.Activity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,23 +15,32 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.five.high.emirim.geulgil.Adapter.DialogManager;
+import com.five.high.emirim.geulgil.Adapter.PrefManager;
 import com.five.high.emirim.geulgil.Control.ConnectApi;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
+import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity{
     private final String SEARCHING_WORDS = "searching word";
 
     EditText mEditText;
-
+    PrefManager prefManager;
     private boolean isMean = true;
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         getWindow().setBackgroundDrawableResource(R.drawable.background);
+
+        M.mResult = new ArrayList<HashSet<SameSounds>>();
+        M.mKeywordItem = new ArrayList<KeywordItem>();
 
         View searchBar = findViewById(R.id.search_box);
         ImageView searchButton = (ImageView)searchBar.findViewById(R.id.iv_searchBtn);
@@ -71,6 +83,21 @@ public class MainActivity extends AppCompatActivity{
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        ImageView question = (ImageView) findViewById(R.id.question_mark);
+
+        question.setImageAlpha(50);
+        question.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                prefManager = new PrefManager(getApplicationContext());
+                // make first time launch TRUE
+                prefManager.setFirstTimeLaunch(true);
+                startActivity(new Intent(MainActivity.this, IntroActivity.class));
+                finish();
+
+            }
         });
     }
 
