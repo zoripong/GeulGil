@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.five.high.emirim.geulgil.M;
+import com.five.high.emirim.geulgil.Model.KeywordItem;
 import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
 
@@ -20,6 +21,7 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
 
         M.mResult = new ArrayList<HashSet<SameSounds>>();
+        M.mKeywordItem = new ArrayList<KeywordItem>();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();

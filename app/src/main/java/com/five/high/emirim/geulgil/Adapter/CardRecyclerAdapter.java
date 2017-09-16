@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,12 +64,13 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
             for (int i = 0; i < meankeyword.size(); i++)
                 keywords.add(new KeywordItem(meankeyword.get(i), true));
 
-            dynamicButtonManager.setDynamicButton(keywords, holder.mMeanKeywordLocation, false);
+            dynamicButtonManager.setDynamicButton(keywords, holder.mMeanKeywordLocation, 4);
             keywords.clear();
 
             for (int i = 0; i < similarkeyword.size(); i++)
                 keywords.add(new KeywordItem(similarkeyword.get(i), false));
-            dynamicButtonManager.setDynamicButton(keywords, holder.mSimilarKeywordLocation, false);
+
+            dynamicButtonManager.setDynamicButton(keywords, holder.mSimilarKeywordLocation, 4);
         }else{
             holder.mTvMean.setText("외 " + String.valueOf(item.getWordItems().size()-1)+"개의 결과");
         }
@@ -113,7 +113,7 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         TextView mTvMean;
         LinearLayout mMeanKeywordLocation;
         LinearLayout mSimilarKeywordLocation;
-        ImageView mXbutton;
+        LinearLayout mXbutton;
 
         public CardViewHolder(View itemView) {
             super(itemView);
@@ -123,7 +123,7 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
             cardview = (CardView) itemView.findViewById(R.id.cardview);
             mMeanKeywordLocation = (LinearLayout)itemView.findViewById(R.id.mean_keywords_location);
             mSimilarKeywordLocation = (LinearLayout)itemView.findViewById(R.id.similar_keywords_location);
-            mXbutton = (ImageView) itemView.findViewById(R.id.x_button);
+            mXbutton = (LinearLayout) itemView.findViewById(R.id.x_button);
         }
     }
 

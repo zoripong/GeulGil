@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,28 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.five.high.emirim.geulgil.Adapter.SearchRecyclerSetter;
-import com.five.high.emirim.geulgil.Control.ControlData;
+import com.five.high.emirim.geulgil.Control.ConnectApi;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Control.SharedPreferencesManager;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
-import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.Model.SearchRecordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
-// TODO: 2017-09-10 : 검색 기록 .. ㅜ.ㅜ.ㅜㅜ.
 
 public class SearchActivity extends AppCompatActivity {
-    private final String SEARCHING_WORDS = "searching word";
 
     EditText mEditText;
     private boolean isMean = true;
-
-    ArrayList<KeywordItem> mKeywordItemList;
-    HashSet<SameSounds> mResultWordSet;
 
     DynamicButtonManager dynamicButtonManager;
 
@@ -62,16 +53,15 @@ public class SearchActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        mKeywordItemList = (ArrayList<KeywordItem>) intent.getSerializableExtra(SEARCHING_WORDS);
 
         mKeywordsLocation = (LinearLayout) findViewById(R.id.searched_words);
         mRootLayout = (LinearLayout) findViewById(R.id.root);
 
-        dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRootLayout);
-        mDynamicButtons = dynamicButtonManager.setDynamicButton(mKeywordItemList,mKeywordsLocation , true);
+        dynamicButtonManager = new DynamicButtonManager(SearchActivity.this, mRootLayout);
+        mDynamicButtons = dynamicButtonManager.setDynamicButton(M.mKeywordItem,mKeywordsLocation, 0);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
-        searchRecyclerSetter = new SearchRecyclerSetter(this);
+        searchRecyclerSetter = new SearchRecyclerSetter(SearchActivity.this, SearchActivity.this);
         searchRecyclerSetter.setRecyclerCardView(recyclerView);
 
         isLongClicked = new boolean[mDynamicButtons.size()];
@@ -87,8 +77,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        //TODO : 검색 키워드 삭제시 결과도 변동 되야 함.. 하 .. 스트레스다.. ><
-        // mKeywordList가 검색단어들을 담고 있다!
         for(int i = 0; i< mDynamicButtons.size(); i++){
             final TextView keyword = mDynamicButtons.get(i);
             final int finalI = i;
@@ -111,9 +99,9 @@ public class SearchActivity extends AppCompatActivity {
                     if(isLongClicked[finalI]){
                         isLongClicked[finalI] = false;
                         mKeywordsLocation.removeView(keyword);
-                        mKeywordItemList.remove(finalI);
+                        M.mKeywordItem.remove(finalI);
                         M.mResult.remove(finalI);
-                        if(mKeywordItemList.size() == 0)
+                        if(M.mKeywordItem.size() == 0)
                             mRemoveButton.setVisibility(View.INVISIBLE);
                     }
                     changeOrigin();
@@ -140,18 +128,8 @@ public class SearchActivity extends AppCompatActivity {
             String word = mEditText.getText().toString();
             if(!word.equals("")) {
                 KeywordItem keywordItem = new KeywordItem(word, isMean);
-
-                //.. get data
-                ControlData control = new ControlData(getApplicationContext());
-                mResultWordSet = control.searchingWord(keywordItem);
-
-                if(mResultWordSet == null){
-                    Log.e("Null", mResultWordSet+"은 null");
-                    Toast.makeText(SearchActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
-                }else{
-                    mKeywordItemList.add(keywordItem);
-                    changeActivity();
-                }
+                ConnectApi connectApi = new ConnectApi(SearchActivity.this, SearchActivity.this);
+                connectApi.getRelativesResult(keywordItem);
             }else{
                 Toast.makeText(SearchActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
             }
@@ -178,7 +156,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final Dialog dialog = new Dialog(SearchActivity.this, R.style.MyDialog);
-                dialog.setContentView(R.layout.dialog);
+                dialog.setContentView(R.layout.dialog_style2);
                 dialog.show();
 
                 TextView textView = (TextView)dialog.findViewById(R.id.dialog_text);
@@ -194,7 +172,7 @@ public class SearchActivity extends AppCompatActivity {
                 mYesButton.setOnClickListener(new View.OnClickListener(){
                     public  void onClick(View v){
                         mKeywordsLocation.removeAllViews();
-                        mKeywordItemList.clear();
+                        M.mKeywordItem.clear();
                         mRemoveButton.setVisibility(View.INVISIBLE);
                         dialog.dismiss();
                     }
@@ -212,29 +190,23 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        changeActivity();
-    }
-
-    private void changeActivity(){
-        if(mKeywordItemList.size() != 0) {
-            Intent intent = new Intent(SearchActivity.this, ResultCardViewActivity.class);
-            intent.putExtra(SEARCHING_WORDS, mKeywordItemList);
-            startActivity(intent);
-            finish();
-        }else{
+        if(M.mResult.size() == 0){
+            M.isShow = true;
             Intent intent = new Intent(SearchActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-            Toast.makeText(getApplicationContext(), "키워드를 입력해주세요 :>", Toast.LENGTH_SHORT).show();
+        }else{
+            Intent intent = new Intent(SearchActivity.this, ResultCardViewActivity.class);
+            startActivity(intent);
+            finish();
         }
-
     }
 
     private void changeOrigin(){
         for(int i = 0; i< mDynamicButtons.size(); i++){
             if(isLongClicked[i]) {
                 String strColor = null;
-                KeywordItem word = mKeywordItemList.get(i);
+                KeywordItem word = M.mKeywordItem.get(i);
                 isLongClicked[i] = false;
                 mDynamicButtons.get(i).setText(word.getWord());
                 if(word.isMean()){
@@ -250,3 +222,5 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 }
+
+

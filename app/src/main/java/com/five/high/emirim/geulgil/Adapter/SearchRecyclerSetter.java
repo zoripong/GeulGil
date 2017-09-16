@@ -1,5 +1,6 @@
 package com.five.high.emirim.geulgil.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +18,11 @@ public class SearchRecyclerSetter {
     SearchRecyclerAdapter adapter;
 
     Context context;
+    Activity nowActivity;
 
-    public SearchRecyclerSetter(Context context) {
+    public SearchRecyclerSetter(Context context, Activity nowActivity) {
         this.context = context;
+        this.nowActivity = nowActivity;
     }
 
     public boolean setRecyclerCardView(RecyclerView recyclerView){
@@ -31,7 +34,7 @@ public class SearchRecyclerSetter {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        adapter = new SearchRecyclerAdapter(context);
+        adapter = new SearchRecyclerAdapter(context, nowActivity);
         recyclerView.setAdapter(adapter);
         return true;
 

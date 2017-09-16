@@ -35,13 +35,17 @@ public class DetailViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
+
         mItem = (SameSounds) getIntent().getSerializableExtra(SELECT_WORD);
         init();
 
         mWord.setText(mItem.getId());
-        Log.e("안녕", mItem.getWordItems().get(0).toString());
+        Log.e("Set the DetailView", mItem.getWordItems().get(0).toString());
 
         mPart.setText("[" + mItem.getWordItems().get(0).getPart() + "]");
+        Log.e("MeanKeyword", mItem.getWordItems().get(0).getMeankeyword().size()+"개");
+
+
         dynamicButtonManager.convertStringToModel(mItem.getWordItems().get(0).getMeankeyword(), mMeanKeywordsLocation, true);
         dynamicButtonManager.convertStringToModel(mItem.getWordItems().get(0).getSimilarkeyword(), mSimilarKeywordsLocation, false);
 
@@ -55,9 +59,6 @@ public class DetailViewActivity extends AppCompatActivity {
         items = new ArrayList<SearchRecordItem>(set);
 
         sharedPreferencesManager.saveSharedPreferencesLogList(getApplicationContext(), items);
-        for(int i = 0; i<items.size(); i++){
-            Log.e("before", items.get(i).toString());
-        }
         // 검색 기록 저장
     }
 
@@ -68,7 +69,7 @@ public class DetailViewActivity extends AppCompatActivity {
         mWord = (TextView)findViewById(R.id.tv_word);
         mMeanLocation = (LinearLayout)findViewById(R.id.mean_location);
         mPart = (TextView)findViewById(R.id.tv_position);
-        dynamicButtonManager = new DynamicButtonManager(getApplicationContext(), mRoot, this);
+        dynamicButtonManager = new DynamicButtonManager(DetailViewActivity.this, mRoot, this);
         sharedPreferencesManager = new SharedPreferencesManager();
     }
 

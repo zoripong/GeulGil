@@ -1,27 +1,21 @@
 package com.five.high.emirim.geulgil.Activity;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.five.high.emirim.geulgil.Control.ControlData;
+import com.five.high.emirim.geulgil.Adapter.DialogManager;
+import com.five.high.emirim.geulgil.Control.ConnectApi;
 import com.five.high.emirim.geulgil.M;
 import com.five.high.emirim.geulgil.Model.KeywordItem;
-import com.five.high.emirim.geulgil.Model.SameSounds;
 import com.five.high.emirim.geulgil.R;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity{
     private final String SEARCHING_WORDS = "searching word";
@@ -41,33 +35,27 @@ public class MainActivity extends AppCompatActivity{
         mEditText = (EditText)searchBar.findViewById(R.id.et_searchBox);
         Spinner spinner = (Spinner)searchBar.findViewById(R.id.spinner);
 
+        if(M.isShow)        {
+            M.isShow = false;
+            DialogManager dialogManager = new DialogManager(MainActivity.this);
+            dialogManager.showDialog("검색 키워드가 없습니다 :>", 1);
+        }
+
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 String word = mEditText.getText().toString();
                 if(!word.equals("")) {
                     KeywordItem keywordItem = new KeywordItem(word, isMean);
-
-                    //.. get data
-                    ControlData control = new ControlData(getApplicationContext());
-                    HashSet<SameSounds> result = control.searchingWord(keywordItem);
-                    Log.e("중간점검", M.mResult.size()+".");
-
-                    if(result == null){
-                        Toast.makeText(MainActivity.this, "검색 결과가 없습니다:( 다른 검색어를 입력해주세요!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        ArrayList<KeywordItem> keywordItems = new ArrayList<KeywordItem>();
-                        keywordItems.add(keywordItem);
-
-                        Intent intent = new Intent(MainActivity.this, ResultCardViewActivity.class);
-                        intent.putExtra(SEARCHING_WORDS, keywordItems);
-                        startActivity(intent);
-                        finish();
-
-                    }
-                }else{
-                    Toast.makeText(MainActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    ConnectApi connectApi = new ConnectApi(MainActivity.this, MainActivity.this);
+                    connectApi.getRelativesResult(keywordItem);
                 }
+                else{
+                    DialogManager dialogManager = new DialogManager(MainActivity.this);
+                    dialogManager.showDialog("검색 단어를 입력해주세요 :>", 1);
+                }
+
+
             }
         });
 
@@ -87,3 +75,4 @@ public class MainActivity extends AppCompatActivity{
     }
 
 }
+
