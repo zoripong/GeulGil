@@ -24,6 +24,8 @@ import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.regex.Pattern;
+
 
 public class MainActivity extends AppCompatActivity{
     private final String SEARCHING_WORDS = "searching word";
@@ -57,14 +59,21 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String word = mEditText.getText().toString();
-                if(!word.equals("")) {
+                if(checkForm(word)&&!word.toLowerCase().equals("highfive")) {
+                    DialogManager dialogManager = new DialogManager(MainActivity.this);
+                    dialogManager.showDialog("영어는 지원하지 않습니다 :(", 1);
+                }else if(checkEmpty(word)){
+                    DialogManager dialogManager = new DialogManager(MainActivity.this);
+                    dialogManager.showDialog("키워드를 입력해주세요 :(", 1);
+                }else if((checkForm(word)&&word.toLowerCase().equals("highfive"))||word.equals("글길")) {
+                    Intent intent = new Intent(MainActivity.this, EasterEggActivity.class);
+                    startActivity(intent);
+                } else{
+                    word = word.replace(" ", "");
                     KeywordItem keywordItem = new KeywordItem(word, isMean);
                     ConnectApi connectApi = new ConnectApi(MainActivity.this, MainActivity.this);
                     connectApi.getRelativesResult(keywordItem);
-                }
-                else{
-                    DialogManager dialogManager = new DialogManager(MainActivity.this);
-                    dialogManager.showDialog("검색 단어를 입력해주세요 :>", 1);
+
                 }
 
 
@@ -99,6 +108,25 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+    }
+    private boolean checkForm(String str) {
+        boolean result = Pattern.matches("^[a-zA-Z0-9]*$", str);
+
+        if(str.length() > 0 && result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private boolean checkEmpty(String str){
+        if(str.length() == 0)
+            return true;
+        char [] chars = str.toCharArray();
+        for(int i = 0; i<str.length(); i++){
+            if(chars[i] != ' ')
+                return false;
+        }
+        return true;
     }
 
 }

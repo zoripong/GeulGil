@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.five.high.emirim.geulgil.Adapter.DialogManager;
 import com.five.high.emirim.geulgil.Adapter.SearchRecyclerSetter;
 import com.five.high.emirim.geulgil.Control.ConnectApi;
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
@@ -26,6 +26,7 @@ import com.five.high.emirim.geulgil.Model.SearchRecordItem;
 import com.five.high.emirim.geulgil.R;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -173,14 +174,20 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-            String word = mEditText.getText().toString();
-            if(!word.equals("")) {
-                KeywordItem keywordItem = new KeywordItem(word, isMean);
-                ConnectApi connectApi = new ConnectApi(SearchActivity.this, SearchActivity.this);
-                connectApi.getRelativesResult(keywordItem);
-            }else{
-                Toast.makeText(SearchActivity.this, "검색 단어를 입력해주세요!", Toast.LENGTH_SHORT).show();
-            }
+
+                String word = mEditText.getText().toString();
+                if(checkForm(word)&&!word.toLowerCase().equals("highfive")) {
+                    DialogManager dialogManager = new DialogManager(SearchActivity.this);
+                    dialogManager.showDialog("영어는 지원하지 않습니다 :(", 1);
+                }else if(checkEmpty(word)){
+                    DialogManager dialogManager = new DialogManager(SearchActivity.this);
+                    dialogManager.showDialog("키워드를 입력해주세요 :(", 1);
+                }else{
+                    word = word.replace(" ", "");
+                    KeywordItem keywordItem = new KeywordItem(word, isMean);
+                    ConnectApi connectApi = new ConnectApi(SearchActivity.this, SearchActivity.this);
+                    connectApi.getRelativesResult(keywordItem);
+                }
             }
         });
 
@@ -272,6 +279,25 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
+    private boolean checkForm(String str) {
+        boolean result = Pattern.matches("^[a-zA-Z0-9]*$", str);
+
+        if(str.length() > 0 && result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private boolean checkEmpty(String str){
+        if(str.length() == 0)
+            return true;
+        char [] chars = str.toCharArray();
+        for(int i = 0; i<str.length(); i++){
+            if(chars[i] != ' ')
+                return false;
+        }
+        return true;
+    }
 }
 
 

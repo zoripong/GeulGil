@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.five.high.emirim.geulgil">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -27,11 +28,13 @@
             android:label="글길"/>
         <activity
             android:name=".Activity.ResultCardViewActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="글길"/>
+            android:label="글길"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.SearchActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Activity.EasterEggActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
