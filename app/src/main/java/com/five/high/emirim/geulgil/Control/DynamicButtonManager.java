@@ -156,7 +156,6 @@ public class DynamicButtonManager {
 
         meanText.setText(MEAN_ID+". "+word.getMean());
         meanText.setId(MEAN_ID++);
-        meanText.setTextSize(convertDpToPixel(8));
         customizingBackground(meanText);
         location.addView(meanText);
 
@@ -173,8 +172,9 @@ public class DynamicButtonManager {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, convertDpToPixel(5), 0, convertDpToPixel(5)); // left top right bottom
         mean.setLayoutParams(params);
-        mean.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        mean.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         mean.setTextColor(Color.GRAY);
+
     }
 
 }
