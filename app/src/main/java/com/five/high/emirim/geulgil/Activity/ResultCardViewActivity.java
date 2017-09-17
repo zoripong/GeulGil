@@ -50,7 +50,7 @@ public class ResultCardViewActivity extends AppCompatActivity {
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        cardRecyclerSetter = new CardRecyclerSetter(this);
+        cardRecyclerSetter = new CardRecyclerSetter(ResultCardViewActivity.this, ResultCardViewActivity.this);
 
         if(checkBox.isChecked())
             cardRecyclerSetter.setRecyclerCardView(recyclerView, crossSet());

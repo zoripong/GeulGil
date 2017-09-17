@@ -1,5 +1,6 @@
 package com.five.high.emirim.geulgil.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +20,14 @@ public class CardRecyclerSetter {
     CardRecyclerAdapter adapter;
 
     Context context;
+    Activity nowActivity;
 
-    public CardRecyclerSetter(Context context){
+    public CardRecyclerSetter(Context context, Activity nowActivity){
         this.context = context;
+        this.nowActivity = nowActivity;
     }
+
+
 
     //리사이클러 카드뷰 세팅
     public boolean setRecyclerCardView(RecyclerView recyclerView, HashSet<SameSounds> hashSet){
@@ -40,7 +45,7 @@ public class CardRecyclerSetter {
             items.add(iterator.next());
         }
 
-        adapter = new CardRecyclerAdapter(context, items);
+        adapter = new CardRecyclerAdapter(context, items, nowActivity);
         recyclerView.setAdapter(adapter);
         return true;
 

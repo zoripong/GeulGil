@@ -4,6 +4,7 @@ package com.five.high.emirim.geulgil.Adapter;
  * Created by 유리 on 2017-06-16.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -30,12 +31,17 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     private final String SELECT_WORD = "selectedWord";
     Context context;
     List<SameSounds> items;
+    Activity nowActiviy;
 
     public CardRecyclerAdapter(Context context, List<SameSounds> items) {
         this.context = context;
         this.items = items;
     }
 
+    public CardRecyclerAdapter(Context context, List<SameSounds> items, Activity nowActiviy) {
+        this(context, items);
+        this.nowActiviy = nowActiviy;
+    }
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cardview, parent, false);
@@ -88,7 +94,12 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
             @Override
             public void onClick(View v) {
                 items.remove(position);
+
+                ((TextView)nowActiviy.findViewById(R.id.count)).setText(items.size()+" 개");
+
+
                 if(items.size()==0){
+
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     v.getContext().startActivity(intent);
