@@ -36,14 +36,18 @@ public class DynamicButtonManager {
     LinearLayout mRootLayout;
     Activity nowActivity;
 
+    ArrayList<TextView> textViews;
+
     public DynamicButtonManager(Context context, LinearLayout root) {
         mContext = context;
         mRootLayout = root;
+        textViews = new ArrayList<>();
     }
 
     public DynamicButtonManager(Context context, LinearLayout root, Activity nowActivity){
         this(context, root);
         this.nowActivity = nowActivity;
+        textViews = new ArrayList<>();
     }
 
     private TextView setDynamicButton(final KeywordItem word, final LinearLayout location, int clickType){
@@ -141,12 +145,25 @@ public class DynamicButtonManager {
     public void setMeanText(SameSounds words, LinearLayout location, LinearLayout meanLocation, LinearLayout similarLocation){
         location.removeAllViews();
         ArrayList<WordItem> list = words.getWordItems();
+        textViews.clear();
         for(int i = 0; i<list.size(); i++){
-            setMeanText(list.get(i), location, meanLocation, similarLocation);
+            setMeanText(i, list.get(i), location, meanLocation, similarLocation);
         }
+
+        setTextColor(0);
     }
 
-    private void setMeanText(final WordItem word, LinearLayout location, final LinearLayout mMeanLocation, final LinearLayout mSimilarLocation){
+    private void setTextColor(int selectPosition){
+        Log.e("ㅁ니ㅏㅇ럼;럼ㄴㅇㄹ", String.valueOf(selectPosition));
+
+        for(int i = 0; i<textViews.size(); i++){
+            if(i == selectPosition)
+                textViews.get(i).setTextColor(Color.parseColor("#000000"));
+            else
+                textViews.get(i).setTextColor(Color.parseColor("#acacac"));
+        }
+    }
+    private void setMeanText(final int position, final WordItem word, LinearLayout location, final LinearLayout mMeanLocation, final LinearLayout mSimilarLocation){
 
         TextView meanText = new TextView(mContext);
 
@@ -156,16 +173,22 @@ public class DynamicButtonManager {
 
         meanText.setText(MEAN_ID+". "+word.getMean());
         meanText.setId(MEAN_ID++);
+
         customizingBackground(meanText);
         location.addView(meanText);
 
         meanText.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+                    // TODO: 2017-11-19 저장
                     convertStringToModel(word.getMeankeyword(), mMeanLocation, true);
                     convertStringToModel(word.getSimilarkeyword(), mSimilarLocation, false);
+                    setTextColor(position);
                 }
             });
+
+        textViews.add(meanText);
+
     }
 
     private void customizingBackground(TextView mean){
