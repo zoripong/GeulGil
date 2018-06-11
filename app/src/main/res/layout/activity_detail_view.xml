@@ -2,8 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +27,10 @@
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:scrollbarThumbHorizontal="@color/colorPrimary"
+                android:scrollbarSize="2dp"
+                android:fadeScrollbars="false">
                 <LinearLayout
                     android:id="@+id/keywords_location_mean"
                     android:layout_width="match_parent"
@@ -36,6 +45,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="center_vertical"
+                android:scrollbarSize="2dp"
+                android:scrollbarThumbHorizontal="@color/colorPrimary"
+                android:fadeScrollbars="false"
                 >
                 <LinearLayout
                     android:id="@+id/keywords_location_similar"
@@ -76,8 +88,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 </LinearLayout>
+
             </ScrollView>
 
+
+
         </LinearLayout>
+
+
     </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/floating_icon"
+        android:backgroundTint="@color/colorPrimary"/>
+    </RelativeLayout>
 </LinearLayout>

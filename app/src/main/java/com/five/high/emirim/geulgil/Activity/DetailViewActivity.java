@@ -1,10 +1,13 @@
 package com.five.high.emirim.geulgil.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.support.design.widget.FloatingActionButton;
 
 import com.five.high.emirim.geulgil.Control.DynamicButtonManager;
 import com.five.high.emirim.geulgil.Control.SharedPreferencesManager;
@@ -44,6 +47,25 @@ public class DetailViewActivity extends AppCompatActivity {
 
         mPart.setText("[" + mItem.getWordItems().get(0).getPart() + "]");
         Log.e("MeanKeyword", mItem.getWordItems().get(0).getMeankeyword().size()+"개");
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailViewActivity.this, MainActivity.class);
+                startActivity(intent);
+
+
+            }
+
+        });
+
+
+
 
 
         dynamicButtonManager.convertStringToModel(mItem.getWordItems().get(0).getMeankeyword(), mMeanKeywordsLocation, true);
